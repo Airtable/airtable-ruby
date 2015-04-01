@@ -4,6 +4,7 @@ module Airtable
     def initialize(attrs={})
       @columns_map = attrs.keys
       @attrs = HashWithIndifferentAccess.new(Hash[attrs.map { |k, v| [ to_key(k), v ] }])
+      @attrs.map { |k, v| define_accessor(k) }
     end
 
     def id; @attrs["id"]; end
@@ -17,6 +18,7 @@ module Airtable
     # Set the given attribute to value
     def []=(name, value)
       @attrs[to_key(name)] = value
+      define_accessor(name) unless respond_to?(name)
     end
 
     def inspect
@@ -29,6 +31,8 @@ module Airtable
     # Hash with keys based on airtable original column names
     def fields; Hash[@columns_map.map { |k| [ k, @attrs[to_key(k)] ] }]; end
 
+    protected
+
     def to_key(string)
       string.is_a?(Symbol) ? string : underscore(string).to_sym
     end
@@ -38,6 +42,10 @@ module Airtable
         gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
         gsub(/([a-z\d])([A-Z])/,'\1_\2').
         gsub(/\s/, '_').tr("-", "_").downcase
+    end
+
+    def define_accessor(name)
+      self.class.send(:define_method, name) { @attrs[name] }
     end
   end # Record
 
