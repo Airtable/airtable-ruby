@@ -31,6 +31,20 @@ module Airtable
     # Hash with keys based on airtable original column names
     def fields; Hash[@columns_map.map { |k| [ k, @attrs[to_key(k)] ] }]; end
 
+
+    def method_missing(name, *args, &blk)
+      # Accessor for attributes
+      if args.empty? && blk.nil? && @attrs.has_key?(name)
+        @attrs[name]
+      else
+        super
+      end
+    end
+
+    def respond_to?(method_name, include_private = false)
+      @attrs.has_key?(name) || super
+    end
+
     protected
 
     def to_key(string)
@@ -47,6 +61,7 @@ module Airtable
     def define_accessor(name)
       self.class.send(:define_method, name) { @attrs[name] }
     end
+
   end # Record
 
 end # Airtable
