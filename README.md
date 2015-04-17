@@ -38,23 +38,43 @@ Now we can access any table in our Airsheet account by referencing the [API docs
 @table = @client.table("appPo84QuCy2BPgLk", "Table Name")
 ```
 
-### Querying All Records
+### Querying Records
 
-Once you have access to a table from above, we can query all records in the table with:
+Once you have access to a table from above, we can query a set of records in the table with:
 
 ```ruby
-@records = @table.all
+@records = @table.records
 ```
 
-We can then access the contents of any record:
+We can specify a `sort` order, `limit`, and `offset` as part of our query:
+
+```ruby
+@records = @table.records(:sort => ["Name", :asc], :limit => 50)
+@records # => [#<Airtable::Record :name=>"Bill Lowry", :email=>"billery@gmail.com">, ...]
+@records.offset #=> "itrEN2TCbrcSN2BMs"
+```
+
+This will return the records based on the query as well as an `offset` for the next round of records. We can then access the contents of any record:
 
 ```ruby
 @bill = @record.first
 # => #<Airtable::Record :name=>"Bill Lowry", :email=>"billery@gmail.com", :id=>"rec02sKGVIzU65eV1">
 @bill[:id] # => "rec02sKGVIzU65eV2"
 @bill[:name] # => "Bill Lowry"
-@bill[:email] # => "Bill Lowry"
+@bill[:email] # => "billery@gmail.com"
 ```
+
+Note that you can only request a maximimum of 100 records in a single query. To retrieve more records, use the "batch" feature below.
+
+### Batch Querying All Records
+
+We can also query all records in the table through a series of batch requests with:
+
+```ruby
+@records = @table.all(:sort => ["Name", :asc])
+```
+
+This executes a variable number of network requests (100 records per batch) to retrieve all records in a sheet. 
 
 ### Finding a Record
 
