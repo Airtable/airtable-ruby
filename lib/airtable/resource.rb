@@ -3,6 +3,7 @@ module Airtable
   class Resource
     include HTTParty
     base_uri 'https://api.airtable.com/v0/'
+    # debug_output $stdout
 
     attr_reader :api_key, :app_token, :worksheet_name
 
