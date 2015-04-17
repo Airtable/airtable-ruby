@@ -3,6 +3,7 @@ require 'fakeweb'
 require 'minitest/pride'
 require 'minitest/autorun'
 
+# https://github.com/chrisk/fakeweb
 FakeWeb.allow_net_connect = false
 
 def stub_airtable_response(url, response)
