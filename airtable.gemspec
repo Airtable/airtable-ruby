@@ -23,4 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "minitest", "~> 5.6.0"
   spec.add_development_dependency "fakeweb", "~> 1.3"
+  spec.add_development_dependency "activesupport", ">= 3.0"
 end

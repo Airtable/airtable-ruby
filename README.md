@@ -91,7 +91,7 @@ Records can be inserted using the `create` method on a table:
 
 ```ruby
 @record = Airtable::Record.new(:name => "Sarah Jaine", :email => "sarah@jaine.com")
-@table.create(record)
+@table.create(@record)
 # => #<Airtable::Record :name=>"Sarah Jaine", :email=>"sarah@jaine.com", :id=>"rec03sKOVIzU65eV4">
 ```
 

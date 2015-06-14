@@ -30,7 +30,7 @@ module Airtable
     # Returns record based given row id
     def find(id)
       result = self.class.get(worksheet_url + "/" + id).parsed_response
-      Record.new(result["fields"].merge("id" => result["id"])) if result.present? && result["id"]
+      Record.new(result_attributes(result)) if result.present? && result["id"]
     end
 
     # Creates a record by posting to airtable
@@ -39,7 +39,7 @@ module Airtable
         :body => { "fields" => record.fields }.to_json,
         :headers => { "Content-type" => "application/json" }).parsed_response
       if result.present? && result["id"].present?
-        record.id = result["id"]
+        record.override_attributes!(result_attributes(result))
         record
       else # failed
         false
@@ -48,10 +48,11 @@ module Airtable
 
     # Replaces record in airtable based on id
     def update(record)
-      result = self.class.put(worksheet_url + "/" + id,
+      result = self.class.put(worksheet_url + "/" + record.id,
         :body => { "fields" => record.fields }.to_json,
         :headers => { "Content-type" => "application/json" }).parsed_response
       if result.present? && result["id"].present?
+        record.override_attributes!(result_attributes(result))
         record
       else # failed
         false
@@ -64,6 +65,10 @@ module Airtable
     end
 
     protected
+
+    def result_attributes(res)
+      res["fields"].merge("id" => res["id"]) if res.present? && res["id"]
+    end
 
     def worksheet_url
       "/#{app_token}/#{URI.encode(worksheet_name)}"

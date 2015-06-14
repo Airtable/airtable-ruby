@@ -16,10 +16,31 @@ describe Airtable do
     end
 
     it "should fetch record set" do
-      stub_airtable_response("https://api.airtable.com/v0/#{@app_key}/#{@sheet_name}", { "records" => [], "offset" => "abcde" })
+      stub_airtable_response!("https://api.airtable.com/v0/#{@app_key}/#{@sheet_name}", { "records" => [], "offset" => "abcde" })
       @table = Airtable::Client.new(@client_key).table(@app_key, @sheet_name)
       @records = @table.records
       assert_equal "abcde", @records.offset
     end
+
+    it "should allow creating records" do
+      stub_airtable_response!("https://api.airtable.com/v0/#{@app_key}/#{@sheet_name}",
+        { "fields" => { "name" => "Sarah Jaine", "email" => "sarah@jaine.com", "foo" => "bar" }, "id" => "12345" }, :post)
+      table = Airtable::Client.new(@client_key).table(@app_key, @sheet_name)
+      record = Airtable::Record.new(:name => "Sarah Jaine", :email => "sarah@jaine.com")
+      table.create(record)
+      assert_equal "12345", record["id"]
+      assert_equal "bar", record["foo"]
+    end
+
+    it "should allow updating records" do
+        record_id = "12345"
+        stub_airtable_response!("https://api.airtable.com/v0/#{@app_key}/#{@sheet_name}/#{record_id}",
+          { "fields" => { "name" => "Sarah Jaine", "email" => "sarah@jaine.com", "foo" => "bar" }, "id" => record_id }, :put)
+        table = Airtable::Client.new(@client_key).table(@app_key, @sheet_name)
+        record = Airtable::Record.new(:name => "Sarah Jaine", :email => "sarah@jaine.com", :id => record_id)
+        table.update(record)
+        assert_equal "12345", record["id"]
+        assert_equal "bar", record["foo"]
+      end
   end # describe Airtable
 end # Airtable

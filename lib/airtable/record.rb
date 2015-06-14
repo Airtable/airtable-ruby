@@ -2,9 +2,7 @@ module Airtable
 
   class Record
     def initialize(attrs={})
-      @columns_map = attrs.keys
-      @attrs = HashWithIndifferentAccess.new(Hash[attrs.map { |k, v| [ to_key(k), v ] }])
-      @attrs.map { |k, v| define_accessor(k) }
+      override_attributes!(attrs)
     end
 
     def id; @attrs["id"]; end
@@ -28,9 +26,15 @@ module Airtable
     # Hash of attributes with underscored column names
     def attributes; @attrs; end
 
+    # Removes old and add new attributes for the record
+    def override_attributes!(attrs={})
+      @columns_map = attrs.keys
+      @attrs = HashWithIndifferentAccess.new(Hash[attrs.map { |k, v| [ to_key(k), v ] }])
+      @attrs.map { |k, v| define_accessor(k) }
+    end
+
     # Hash with keys based on airtable original column names
     def fields; Hash[@columns_map.map { |k| [ k, @attrs[to_key(k)] ] }]; end
-
 
     def method_missing(name, *args, &blk)
       # Accessor for attributes
