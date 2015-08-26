@@ -45,7 +45,7 @@ module Airtable
       end
     end
 
-    def respond_to?(method_name, include_private = false)
+    def respond_to?(name, include_private = false)
       @attrs.has_key?(name) || super
     end
 
