@@ -12,7 +12,7 @@ module Airtable
       @records = results && results["records"] ?
         results["records"].map { |r| Record.new(r["fields"].merge("id" => r["id"])) } : []
       # Store offset
-      @offset = results["offset"]
+      @offset = results["offset"] if results
       # Assign delegation object
       __setobj__(@records)
     end
