@@ -34,7 +34,10 @@ module Airtable
     end
 
     # Hash with keys based on airtable original column names
-    def fields; Hash[@columns_map.map { |k| [ k, @attrs[to_key(k)] ] }]; end
+    def fields; HashWithIndifferentAccess.new(Hash[@columns_map.map { |k| [ k, @attrs[to_key(k)] ] }]); end
+
+    # Airtable will complain if we pass an 'id' as part of the request body.
+    def fields_for_update; fields.except(:id); end
 
     def method_missing(name, *args, &blk)
       # Accessor for attributes

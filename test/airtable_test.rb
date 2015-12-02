@@ -41,6 +41,7 @@ describe Airtable do
         table.update(record)
         assert_equal "12345", record["id"]
         assert_equal "bar", record["foo"]
-      end
+    end
+
   end # describe Airtable
 end # Airtable
