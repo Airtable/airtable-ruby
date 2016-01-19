@@ -28,13 +28,14 @@ module Airtable
 
     # Removes old and add new attributes for the record
     def override_attributes!(attrs={})
-      @columns_map = attrs.keys
       @attrs = HashWithIndifferentAccess.new(Hash[attrs.map { |k, v| [ to_key(k), v ] }])
       @attrs.map { |k, v| define_accessor(k) }
     end
 
     # Hash with keys based on airtable original column names
-    def fields; HashWithIndifferentAccess.new(Hash[@columns_map.map { |k| [ k, @attrs[to_key(k)] ] }]); end
+    def fields
+      HashWithIndifferentAccess.new(Hash[@attrs.keys.map { |k| [ k, @attrs[to_key(k)] ] }])
+    end
 
     # Airtable will complain if we pass an 'id' as part of the request body.
     def fields_for_update; fields.except(:id); end
@@ -70,5 +71,4 @@ module Airtable
     end
 
   end # Record
-
 end # Airtable
