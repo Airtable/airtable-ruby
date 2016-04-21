@@ -27,6 +27,14 @@ module Airtable
       RecordSet.new(results)
     end
 
+    def select(options={})
+      options["sortField"], options["sortDirection"] = options.delete(:sort) if options[:sort]
+      options["filterByFormula"] = options.delete(:formula) if options[:formula]
+      results = self.class.get(worksheet_url, query: options) #.parsed_response
+      raise results
+      RecordSet.new(results)
+    end
+
     # Returns record based given row id
     def find(id)
       result = self.class.get(worksheet_url + "/" + id).parsed_response
