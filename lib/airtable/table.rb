@@ -27,11 +27,18 @@ module Airtable
       RecordSet.new(results)
     end
 
+    # Query for records using a string formula
+    # Options: limit = 100, offset = "as345g", sort = ["Name", "asc"],
+    #          fields = [Name, Email], formula = "Count > 5", view = "Main View"
+    #          per_page = 25
+    #
     def select(options={})
-      options["sortField"], options["sortDirection"] = options.delete(:sort) if options[:sort]
-      options["filterByFormula"] = options.delete(:formula) if options[:formula]
-      results = self.class.get(worksheet_url, query: options) #.parsed_response
-      raise results
+      options['sortField'], options['sortDirection'] = options.delete(:sort) if options[:sort]
+      options['filterByFormula'] = options.delete(:formula) if options[:formula]
+      options['maxRecords'] = options.delete(:limit) if options[:limit]
+      options['pageSize'] = options.delete(:per_page) if options[:per_page]
+
+      results = self.class.get(worksheet_url, query: options).parsed_response
       RecordSet.new(results)
     end
 
