@@ -30,16 +30,23 @@ module Airtable
     # Query for records using a string formula
     # Options: limit = 100, offset = "as345g", sort = ["Name", "asc"],
     #          fields = [Name, Email], formula = "Count > 5", view = "Main View"
-    #          per_page = 25
     #
+    # select(limit: 10, sort: ["Name", "asc"], formula: "Order < 2")
     def select(options={})
       options['sortField'], options['sortDirection'] = options.delete(:sort) if options[:sort]
-      options['filterByFormula'] = options.delete(:formula) if options[:formula]
       options['maxRecords'] = options.delete(:limit) if options[:limit]
-      options['pageSize'] = options.delete(:per_page) if options[:per_page]
+
+      if options[:formula]
+        raise_bad_formula_error unless options[:formula].is_a? String
+        options['filterByFormula'] = options.delete(:formula)
+      end
 
       results = self.class.get(worksheet_url, query: options).parsed_response
       RecordSet.new(results)
+    end
+
+    def raise_bad_formula_error
+      raise ArgumentError.new("The value for filter should be a String.")
     end
 
     # Returns record based given row id
@@ -86,7 +93,7 @@ module Airtable
     end
 
     def worksheet_url
-      "/#{app_token}/#{URI.encode(worksheet_name)}"
+      "/#{app_token}/#{CGI.escape(worksheet_name)}"
     end
   end # Table
 
