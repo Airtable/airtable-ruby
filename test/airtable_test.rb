@@ -22,6 +22,22 @@ describe Airtable do
       assert_equal "abcde", @records.offset
     end
 
+    it "should select records based on a formula" do
+      query_str = "OR(RECORD_ID() = 'recXYZ1', RECORD_ID() = 'recXYZ2', RECORD_ID() = 'recXYZ3', RECORD_ID() = 'recXYZ4')"
+      escaped_query = HTTParty::Request::NON_RAILS_QUERY_STRING_NORMALIZER.call(filterByFormula: query_str)
+      request_url = "https://api.airtable.com/v0/#{@app_key}/#{@sheet_name}?#{escaped_query}"
+      stub_airtable_response!(request_url, { "records" => []})
+      @table = Airtable::Client.new(@client_key).table(@app_key, @sheet_name)
+      @select_records = @table.select(formula: query_str)
+      assert_equal @select_records.records, []
+    end
+
+    it "should raise an ArgumentError if a formula is not a string" do
+      stub_airtable_response!("https://api.airtable.com/v0/#{@app_key}/#{@sheet_name}", { "records" => [], "offset" => "abcde" })
+      @table = Airtable::Client.new(@client_key).table(@app_key, @sheet_name)
+      proc {  @table.select(formula: {foo: 'bar'}) }.must_raise ArgumentError
+    end
+
     it "should allow creating records" do
       stub_airtable_response!("https://api.airtable.com/v0/#{@app_key}/#{@sheet_name}",
         { "fields" => { "name" => "Sarah Jaine", "email" => "sarah@jaine.com", "foo" => "bar" }, "id" => "12345" }, :post)
