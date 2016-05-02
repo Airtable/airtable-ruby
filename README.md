@@ -2,6 +2,14 @@
 
 Easily connect to [airtable](https://airtable.com) data using ruby with access to all of the airtable features.
 
+# Note on library status
+
+We are currently transitioning this gem to be supported by
+Airtable. We will maintain it moving forward, but until we fully
+support it, it will stay in the status of "community libraries". At
+that time we will remove this notice and add a "ruby" section to the
+API docs.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -74,7 +82,7 @@ We can also query all records in the table through a series of batch requests wi
 @records = @table.all(:sort => ["Name", :asc])
 ```
 
-This executes a variable number of network requests (100 records per batch) to retrieve all records in a sheet. 
+This executes a variable number of network requests (100 records per batch) to retrieve all records in a sheet.
 
 ### Finding a Record
 
