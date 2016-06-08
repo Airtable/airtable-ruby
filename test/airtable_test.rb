@@ -32,6 +32,13 @@ describe Airtable do
       assert_equal @select_records.records, []
     end
 
+    it "should sort by multiple pairs" do
+      stub_airtable_response!("https://api.airtable.com/v0/#{@app_key}/#{@sheet_name}?sort[0][field]=foo&sort[0][direction]=asc&sort[1][field]=bar&sort[1][direction]=desc", { "records" => [], "offset" => "abcde" })
+      @table = Airtable::Client.new(@client_key).table(@app_key, @sheet_name)
+      @select_records = @table.select(sort: [['foo', 'asc'], ['bar', 'desc']])
+      assert_equal @select_records.records, []
+    end
+
     it "should raise an ArgumentError if a formula is not a string" do
       stub_airtable_response!("https://api.airtable.com/v0/#{@app_key}/#{@sheet_name}", { "records" => [], "offset" => "abcde" })
       @table = Airtable::Client.new(@client_key).table(@app_key, @sheet_name)
