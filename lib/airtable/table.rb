@@ -81,6 +81,17 @@ module Airtable
       end
     end
 
+    def update_record_fields(record_id, fields_for_update)
+      result = self.class.patch(worksheet_url + "/" + record_id,
+        :body => { "fields" => fields_for_update }.to_json,
+        :headers => { "Content-type" => "application/json" }).parsed_response
+      if result.present? && result["id"].present?
+        Record.new(result_attributes(result))
+      else # failed
+        false
+      end
+    end
+
     # Deletes record in table based on id
     def destroy(id)
       self.class.delete(worksheet_url + "/" + id).parsed_response
