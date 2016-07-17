@@ -57,38 +57,41 @@ module Airtable
 
     # Creates a record by posting to airtable
     def create(record)
-      result = self.class.post(worksheet_url,
+      response = self.class.post(worksheet_url,
         :body => { "fields" => record.fields }.to_json,
-        :headers => { "Content-type" => "application/json" }).parsed_response
-      if result.present? && result["id"].present?
+        :headers => { "Content-type" => "application/json" })
+
+      if response.success?
         record.override_attributes!(result_attributes(result))
         record
       else # failed
-        false
+        handle_error(response)
       end
     end
 
     # Replaces record in airtable based on id
     def update(record)
-      result = self.class.put(worksheet_url + "/" + record.id,
+      response = self.class.put(worksheet_url + "/" + record.id,
         :body => { "fields" => record.fields_for_update }.to_json,
-        :headers => { "Content-type" => "application/json" }).parsed_response
-      if result.present? && result["id"].present?
-        record.override_attributes!(result_attributes(result))
+        :headers => { "Content-type" => "application/json" })
+
+      if response.success?
+        record.override_attributes!(result_attributes(result.parsed_response))
         record
       else # failed
-        false
+        handle_error(response)
       end
     end
 
     def update_record_fields(record_id, fields_for_update)
-      result = self.class.patch(worksheet_url + "/" + record_id,
+      response = self.class.patch(worksheet_url + "/" + record_id,
         :body => { "fields" => fields_for_update }.to_json,
-        :headers => { "Content-type" => "application/json" }).parsed_response
-      if result.present? && result["id"].present?
-        Record.new(result_attributes(result))
+        :headers => { "Content-type" => "application/json" })
+
+      if response.success?
+        Record.new(result_attributes(result.parsed_response))
       else # failed
-        false
+        handle_error(response)
       end
     end
 
@@ -104,7 +107,16 @@ module Airtable
     end
 
     def worksheet_url
-      "/#{app_token}/#{CGI.escape(worksheet_name)}"
+      "/#{app_token}/#{URI.escape(worksheet_name)}"
+    end
+
+    def handle_error(response)
+      result = response.parsed_response
+      if result["error"]
+        raise Error.new("HTTP #{response.code}, #{result["error"]["type"]}: #{result["error"]["message"]}")
+      else
+        raise Error.new("HTTP #{respone.code}")
+      end
     end
   end # Table
 

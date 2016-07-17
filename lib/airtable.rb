@@ -8,5 +8,5 @@ require 'airtable/table'
 require 'airtable/client'
 
 module Airtable
-  # Nothing for now
+  Error = Class.new(StandardError)
 end
