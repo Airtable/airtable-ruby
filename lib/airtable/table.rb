@@ -107,7 +107,7 @@ module Airtable
     end
 
     def worksheet_url
-      "/#{app_token}/#{CGI.escape(worksheet_name)}"
+      "/#{app_token}/#{URI.escape(worksheet_name)}"
     end
 
     def handle_error(response)
