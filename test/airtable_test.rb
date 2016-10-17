@@ -59,5 +59,15 @@ describe Airtable do
         assert_equal "bar", record["foo"]
     end
 
+    it "should raise an error when the API returns an error" do
+      stub_airtable_response!("https://api.airtable.com/v0/#{@app_key}/#{@sheet_name}",
+        {"error"=>{"type"=>"UNKNOWN_COLUMN_NAME", "message"=>"Could not find fields foo"}}, :post, 422)
+      table = Airtable::Client.new(@client_key).table(@app_key, @sheet_name)
+      record = Airtable::Record.new(:foo => "bar")
+      assert_raises Airtable::Error do
+         table.create(record)
+      end
+    end
+
   end # describe Airtable
 end # Airtable
