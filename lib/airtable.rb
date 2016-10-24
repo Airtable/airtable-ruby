@@ -7,7 +7,3 @@ require 'airtable/record_set'
 require 'airtable/table'
 require 'airtable/client'
 require 'airtable/error'
-
-# module Airtable
-#   # Nothing for now
-# end
