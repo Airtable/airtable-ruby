@@ -2,7 +2,6 @@ require 'airtable'
 require 'webmock/minitest'
 require 'minitest/pride'
 require 'minitest/autorun'
-require 'active_support/core_ext/hash'
 
 def stub_airtable_response!(url, response, method=:get, status=200)
 
