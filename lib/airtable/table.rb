@@ -70,9 +70,9 @@ module Airtable
             singleSortField, singleSortDirection = sortOption
             options["sort"] = [{field: singleSortField, direction: singleSortDirection}]
           elsif sortOption[0].is_a?(Hash)
-            options["sort"] = sortOption
+            options["sort"] = sortOption.to_a
           elsif sortOption.is_a?(Array) && sortOption[0].is_a?(Array)
-            options["sort"] = sortOption.map {|(sortField, sortDirection)| {field: sortField, direction: sortDirection.downcase} }
+            options["sort"] = sortOption.map {|(sortField, sortDirection)| {field: sortField, direction: sortDirection} }
           else
             raise ArgumentError.new("Unknown sort options format.")
           end
@@ -82,6 +82,8 @@ module Airtable
       end
 
       if options["sort"]
+        # standardize the sort spec
+        options["sort"] = options["sort"].map {|sortSpec| {field: sortSpec[:field].to_s, direction: sortSpec[:direction].to_s.downcase} }
         raise ArgumentError.new("Unknown sort direction")  unless options["sort"].all? {|sortObj| ['asc', 'desc'].include? sortObj[:direction]}
       end
     end
