@@ -1,5 +1,7 @@
 require 'httparty'
 require 'delegate'
+require 'active_support/core_ext/hash'
+
 require 'airtable/version'
 require 'airtable/resource'
 require 'airtable/record'
