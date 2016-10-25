@@ -24,6 +24,7 @@ module Airtable
     def records(options={})
       options["sortField"], options["sortDirection"] = options.delete(:sort) if options[:sort]
       results = self.class.get(worksheet_url, query: options).parsed_response
+      check_and_raise_error(results)
       RecordSet.new(results)
     end
 
@@ -42,6 +43,7 @@ module Airtable
       end
 
       results = self.class.get(worksheet_url, query: options).parsed_response
+      check_and_raise_error(results)
       RecordSet.new(results)
     end
 
@@ -52,6 +54,7 @@ module Airtable
     # Returns record based given row id
     def find(id)
       result = self.class.get(worksheet_url + "/" + id).parsed_response
+      check_and_raise_error(result)
       Record.new(result_attributes(result)) if result.present? && result["id"]
     end
 
@@ -60,12 +63,11 @@ module Airtable
       result = self.class.post(worksheet_url,
         :body => { "fields" => record.fields }.to_json,
         :headers => { "Content-type" => "application/json" }).parsed_response
-      if result.present? && result["id"].present?
-        record.override_attributes!(result_attributes(result))
-        record
-      else # failed
-        false
-      end
+
+      check_and_raise_error(result)
+
+      record.override_attributes!(result_attributes(result))
+      record
     end
 
     # Replaces record in airtable based on id
@@ -73,23 +75,22 @@ module Airtable
       result = self.class.put(worksheet_url + "/" + record.id,
         :body => { "fields" => record.fields_for_update }.to_json,
         :headers => { "Content-type" => "application/json" }).parsed_response
-      if result.present? && result["id"].present?
-        record.override_attributes!(result_attributes(result))
-        record
-      else # failed
-        false
-      end
+
+      check_and_raise_error(result)
+
+      record.override_attributes!(result_attributes(result))
+      record
+
     end
 
     def update_record_fields(record_id, fields_for_update)
       result = self.class.patch(worksheet_url + "/" + record_id,
         :body => { "fields" => fields_for_update }.to_json,
         :headers => { "Content-type" => "application/json" }).parsed_response
-      if result.present? && result["id"].present?
-        Record.new(result_attributes(result))
-      else # failed
-        false
-      end
+
+      check_and_raise_error(result)
+
+      Record.new(result_attributes(result))
     end
 
     # Deletes record in table based on id
@@ -98,6 +99,10 @@ module Airtable
     end
 
     protected
+
+    def check_and_raise_error(response)
+      response['error'] ? raise(Error.new(response['error'])) : false
+    end
 
     def result_attributes(res)
       res["fields"].merge("id" => res["id"]) if res.present? && res["id"]
