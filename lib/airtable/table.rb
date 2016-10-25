@@ -69,6 +69,8 @@ module Airtable
           if sortOption[0].is_a? String
             singleSortField, singleSortDirection = sortOption
             options["sort"] = [{field: singleSortField, direction: singleSortDirection}]
+          elsif sortOption[0].is_a?(Hash)
+            options["sort"] = sortOption
           elsif sortOption.is_a?(Array) && sortOption[0].is_a?(Array)
             options["sort"] = sortOption.map {|(sortField, sortDirection)| {field: sortField, direction: sortDirection.downcase} }
           else
