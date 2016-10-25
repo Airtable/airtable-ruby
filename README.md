@@ -28,7 +28,7 @@ Or install it yourself as:
 
 ### Creating a Client
 
-First, be sure to register for an [airtable](https://airtable.com) account, create a data worksheet and [get an api key](https://airtable.com/account). Now, setup your Airtable client:
+First, be sure to register for an [airtable](https://airtable.com) account, create a table and [get an api key](https://airtable.com/account). Now, setup your Airtable client:
 
 ```ruby
 # Pass in api key to client

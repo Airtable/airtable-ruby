@@ -7,16 +7,25 @@ module Airtable
     base_uri (ENV['AIRTABLE_ENDPOINT_URL'] || 'https://api.airtable.com/') + 'v0/'
     # debug_output $stdout
 
-    attr_reader :api_key, :app_token, :worksheet_name
+    attr_reader :api_key, :app_token, :table_name
+
+    # Legacy names
+    def worksheet_name
+      @table_name
+    end
+
+    def worksheet_name=(new_table_name)
+      @table_name = new_table_name;
+    end
 
     query_string_normalizer(proc do |query|
       HTTParty::PatchedHashConversions.to_params(query)
     end)
 
-    def initialize(api_key, app_token, worksheet_name)
+    def initialize(api_key, app_token, table_name)
       @api_key = api_key
       @app_token = app_token
-      @worksheet_name = worksheet_name
+      @table_name = table_name
       self.class.headers({'Authorization' => "Bearer #{@api_key}"})
     end
   end # AuthorizedResource

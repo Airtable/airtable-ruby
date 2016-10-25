@@ -24,7 +24,7 @@ module Airtable
     # records(:sort => ["Name", :desc], :limit => 50, :offset => "as345g")
     def records(options={})
       update_sort_options!(options)
-      raw_response = self.class.get(worksheet_url, query: options)
+      raw_response = self.class.get(table_url, query: options)
       case raw_response.code
           when 200
             # ok
@@ -57,7 +57,7 @@ module Airtable
         options['filterByFormula'] = options.delete(:formula)
       end
 
-      results = self.class.get(worksheet_url, query: options).parsed_response
+      results = self.class.get(table_url, query: options).parsed_response
       check_and_raise_error(results)
       RecordSet.new(results)
     end
@@ -90,14 +90,14 @@ module Airtable
 
     # Returns record based given row id
     def find(id)
-      result = self.class.get(worksheet_url + "/" + id).parsed_response
+      result = self.class.get(table_url + "/" + id).parsed_response
       check_and_raise_error(result)
       Record.new(result_attributes(result)) if result.present? && result["id"]
     end
 
     # Creates a record by posting to airtable
     def create(record)
-      result = self.class.post(worksheet_url,
+      result = self.class.post(table_url,
         :body => { "fields" => record.fields }.to_json,
         :headers => { "Content-type" => "application/json" }).parsed_response
 
@@ -109,7 +109,7 @@ module Airtable
 
     # Replaces record in airtable based on id
     def update(record)
-      result = self.class.put(worksheet_url + "/" + record.id,
+      result = self.class.put(table_url + "/" + record.id,
         :body => { "fields" => record.fields_for_update }.to_json,
         :headers => { "Content-type" => "application/json" }).parsed_response
 
@@ -121,7 +121,7 @@ module Airtable
     end
 
     def update_record_fields(record_id, fields_for_update)
-      result = self.class.patch(worksheet_url + "/" + record_id,
+      result = self.class.patch(table_url + "/" + record_id,
         :body => { "fields" => fields_for_update }.to_json,
         :headers => { "Content-type" => "application/json" }).parsed_response
 
@@ -132,7 +132,7 @@ module Airtable
 
     # Deletes record in table based on id
     def destroy(id)
-      self.class.delete(worksheet_url + "/" + id).parsed_response
+      self.class.delete(table_url + "/" + id).parsed_response
     end
 
     protected
@@ -145,8 +145,8 @@ module Airtable
       res["fields"].merge("id" => res["id"]) if res.present? && res["id"]
     end
 
-    def worksheet_url
-      "/#{app_token}/#{CGI.escape(worksheet_name)}"
+    def table_url
+      "/#{app_token}/#{CGI.escape(table_name)}"
     end
   end # Table
 
