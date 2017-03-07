@@ -10,7 +10,7 @@ describe Airtable do
     it "returns new columns in fields_for_update" do
       record = Airtable::Record.new(:name => "Sarah Jaine", :email => "sarah@jaine.com", :id => 12345)
       record[:website] = "http://sarahjaine.com"
-      record.fields_for_update.must_include(:website)
+      record.fields_for_update.must_include('website')
     end
 
     it "returns fields_for_update in original capitalization" do
