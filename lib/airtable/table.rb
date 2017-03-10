@@ -109,14 +109,7 @@ module Airtable
     end
 
     def worksheet_url
-      "/#{app_token}/#{url_encode(worksheet_name)}"
-    end
-
-    # From http://apidock.com/ruby/ERB/Util/url_encode
-    def url_encode(s)
-      s.to_s.dup.force_encoding("ASCII-8BIT").gsub(/[^a-zA-Z0-9_\-.]/) {
-        sprintf("%%%02X", $&.unpack("C")[0])
-      }
+      "/#{app_token}/#{CGI.escape(worksheet_name)}"
     end
   end # Table
 
