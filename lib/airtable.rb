@@ -1,5 +1,6 @@
 require 'logger'
 
+# Airtable wrapper library
 module Airtable
   class << self
     DEFAULT_URL = 'https://api.airtable.com/v0'.freeze
@@ -29,12 +30,12 @@ module Airtable
   end
 end
 
-require 'airtable/base'
+require 'airtable/response'
+require 'airtable/request'
+require 'airtable/entity'
 require 'airtable/client'
-require 'airtable/table'
 require 'airtable/error'
 
-
-#require 'airtable/resource'
-#require 'airtable/record'
-#require 'airtable/record_set'
+# require 'airtable/resource'
+# require 'airtable/record'
+# require 'airtable/record_set'

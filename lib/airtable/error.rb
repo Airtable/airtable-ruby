@@ -1,7 +1,6 @@
 
 module Airtable
   class Error < StandardError
-
     attr_reader :message, :type
     # {"error"=>{"type"=>"UNKNOWN_COLUMN_NAME", "message"=>"Could not find fields foo"}}
 

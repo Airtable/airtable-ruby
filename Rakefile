@@ -14,4 +14,4 @@ task :rubocop do
   sh 'bundle exec rubocop lib'
 end
 
-task :default => [:spec, :rubocop]
+task default: %i[spec rubocop]

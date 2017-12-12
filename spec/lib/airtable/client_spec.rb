@@ -26,9 +26,9 @@ RSpec.describe ::Airtable::Client do
   end
 
   context '#base' do
-    let(:client) {described_class.new}
-    it 'should return ::Airtable::Base' do
-      expect(client.base('TEST')).to be_a(::Airtable::Base)
+    let(:client) { described_class.new }
+    it 'should return ::Airtable::Entity::Base' do
+      expect(client.base('TEST')).to be_a(::Airtable::Entity::Base)
     end
 
     it 'should have a proper data' do
