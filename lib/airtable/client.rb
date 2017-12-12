@@ -8,13 +8,18 @@
 
 module Airtable
   class Client
-    def initialize(api_key)
-      @api_key = api_key
+    def initialize(api_key = nil)
+      @api_key = api_key || ENV['AIRTABLE_KEY']
+      raise ::Airtable::MissingApiKeyError.new if @api_key.nil? || @api_key.empty?
+    end
+
+    def base(id)
+      ::Airtable::Base.new(id, self)
     end
 
     # table("appXXV84QuCy2BPgLk", "Sheet Name")
-    def table(app_token, worksheet_name)
-      Table.new(@api_key, app_token, worksheet_name)
-    end
+    # def table(app_token, worksheet_name)
+    #   Table.new(@api_key, app_token, worksheet_name)
+    # end
   end # Client
 end # Airtable

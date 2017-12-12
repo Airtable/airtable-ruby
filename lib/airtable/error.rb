@@ -10,6 +10,17 @@ module Airtable
       @type = error_hash['type']
       super(@message)
     end
+  end
 
+  class SortOptionsError < ::ArgumentError
+    def initialize
+      super('Unknown sort options format.')
+    end
+  end
+
+  class MissingApiKeyError < ::ArgumentError
+    def initialize
+      super('Missing API key')
+    end
   end
 end

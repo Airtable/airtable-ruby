@@ -1,0 +1,5 @@
+FROM ruby:2.4.2
+
+ENV LIB_HOME /home/lib
+
+WORKDIR $LIB_HOME

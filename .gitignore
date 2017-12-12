@@ -21,3 +21,6 @@ tmp
 *.a
 mkmf.log
 .DS_Store
+.idea
+.env.docker
+*.log
