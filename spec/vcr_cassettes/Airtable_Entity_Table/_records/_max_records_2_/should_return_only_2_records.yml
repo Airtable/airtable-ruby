@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.airtable.com/v0/appnlJrQ2fxlfRsov/Applicants?pageSize=100
+    uri: https://api.airtable.com/v0/appnlJrQ2fxlfRsov/Applicants?maxRecords=2&pageSize=100
     body:
       encoding: US-ASCII
       string: ''
@@ -32,15 +32,15 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 13 Dec 2017 17:05:32 GMT
+      - Wed, 13 Dec 2017 17:05:35 GMT
       Etag:
-      - W/"1396-s0iIZ/It90SJrQVS5uVNRPfb7Cw"
+      - W/"ced-6o2UVrJhZP7zN/aRnJse9JOltJM"
       Server:
       - Tengine
       Vary:
       - Accept-Encoding
       Content-Length:
-      - '1770'
+      - '1343'
       Connection:
       - keep-alive
     body:
@@ -64,18 +64,7 @@ http_interactions:
         (O. Huxley).docx","size":16443,"type":"application/vnd.openxmlformats-officedocument.wordprocessingml.document","thumbnails":{"small":{"url":"https://dl.airtable.com/attZJp9i2TJ4Z5xeM-28x36.png","width":28,"height":36},"large":{"url":"https://dl.airtable.com/attZJp9i2TJ4Z5xeM-512x663.png","width":512,"height":663}}}],"Onsite
         Interview Score":"3 - good candidate","Applying for":["recgrjFdvUdTGnDsF"],"Phone
         Screen Interviewer":["recnxTtR21srnQBoG"],"Phone Screen Notes":"Good analytical
-        skills, very articulate. Proceed to in-person interview."},"createdTime":"2015-11-11T23:19:11.000Z"},{"id":"recxczR4BaLmvsdU2","fields":{"Email
-        Address":"hrmqueenlizzy@example.com","Phone Screen Score":"3 - good candidate","Onsite
-        Interview Date":"2013-02-17","Stage":"Decision Needed","Onsite Interview Notes":"Liz
-        was highly qualified, but seemed shifty. When faced with a question she was
-        uncomfortable with, she slithered out of it. Could be someone that is very
-        smart, but difficult to deal with. Not sure that she''s a team player, which
-        of course is a problem if you''re going to be representing a team.","Phone":"(865)
-        123-4567","Phone Screen Date":"2013-02-12","Name":"Queen Elizardbeth II","Onsite
-        Interviewer":["recmtSmO51zqqWAqs"],"Attachments":[{"id":"attQ6vAjxpfVlQedd","url":"https://dl.airtable.com/EXBc35SWSKKHxhbTUbOe_elizardbeth.jpg","filename":"elizardbeth.jpg","size":465335,"type":"image/jpeg","thumbnails":{"small":{"url":"https://dl.airtable.com/jl9v4DQWSx8IoqzgWRTg_elizardbeth.jpg","width":24,"height":36},"large":{"url":"https://dl.airtable.com/YHtaEY7mTie2ZpS5hfJz_elizardbeth.jpg","width":256,"height":388}}},{"id":"attZa28XJJt0GL3DB","url":"https://dl.airtable.com/XdCerQy8MqG5RacAKwdn_Q%20Elizardbeth%20Resume.docx","filename":"Q
-        Elizardbeth Resume.docx","size":6519,"type":"application/vnd.openxmlformats-officedocument.wordprocessingml.document","thumbnails":{"small":{"url":"https://dl.airtable.com/attZa28XJJt0GL3DB-28x36.png","width":28,"height":36},"large":{"url":"https://dl.airtable.com/attZa28XJJt0GL3DB-256x331.png","width":256,"height":331}}}],"Onsite
-        Interview Score":"2 - worth consideration","Applying for":["recgrjFdvUdTGnDsF"],"Phone
-        Screen Interviewer":["recnxTtR21srnQBoG"],"Phone Screen Notes":"Move to in-person."},"createdTime":"2015-11-11T23:11:29.000Z"}]}'
+        skills, very articulate. Proceed to in-person interview."},"createdTime":"2015-11-11T23:19:11.000Z"}]}'
     http_version: 
-  recorded_at: Wed, 13 Dec 2017 17:05:44 GMT
+  recorded_at: Wed, 13 Dec 2017 17:05:46 GMT
 recorded_with: VCR 4.0.0

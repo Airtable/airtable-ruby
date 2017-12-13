@@ -2,6 +2,7 @@ require 'net/http'
 require 'net/https'
 
 module Airtable
+  # Main Object that made all requests to server
   class Request
     attr_accessor :url, :body, :headers, :http
 
@@ -21,6 +22,8 @@ module Airtable
       ::Airtable::Response.new(http.request(request))
     end
 
+    private
+
     def setup_http
       http         = ::Net::HTTP.new(url.host, url.port)
       http.use_ssl = true
@@ -28,9 +31,42 @@ module Airtable
     end
 
     def setup_get_request
-      request = ::Net::HTTP::Get.new(url.path)
-      request.set_form_data(body)
-      ::Net::HTTP::Get.new(url.path + '?' + request.body)
+      ::Net::HTTP::Get.new(url.path + '?' + to_query_hash(body))
+    end
+
+    def to_query_default(key, value)
+      "#{CGI.escape(key.to_s)}=#{CGI.escape(value.to_s)}"
+    end
+
+    def to_query_hash(hash, namespace = nil)
+      hash.collect do |key, value|
+        case value
+        when ::Hash
+          to_query_hash(value, namespace ? "#{namespace}[#{key}]" : key)
+        when ::Array
+          to_query_array(value, namespace ? "#{namespace}[#{key}]" : key)
+        else
+          to_query_default(namespace ? "#{namespace}[#{key}]" : key, value)
+        end
+      end.compact.sort! * '&'
+    end
+
+    def to_query_array(array, namespace)
+      prefix = "#{namespace}[]"
+      if array.empty?
+        to_query_default(prefix, nil)
+      else
+        array.collect do |value|
+          case value
+          when ::Hash
+            to_query_hash(value, prefix)
+          when ::Array
+            to_query_array(value, prefix)
+          else
+            to_query_default(prefix, value)
+          end
+        end.join('&')
+      end
     end
 
     def setup_post_request

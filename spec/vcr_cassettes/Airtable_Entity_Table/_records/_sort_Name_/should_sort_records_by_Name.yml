@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.airtable.com/v0/appnlJrQ2fxlfRsov/Applicants?pageSize=100
+    uri: https://api.airtable.com/v0/appnlJrQ2fxlfRsov/Applicants?pageSize=100&sort%5B%5D%5Bdirection%5D=asc&sort%5B%5D%5Bfield%5D=Name
     body:
       encoding: US-ASCII
       string: ''
@@ -32,7 +32,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 13 Dec 2017 17:05:32 GMT
+      - Wed, 13 Dec 2017 16:26:48 GMT
       Etag:
       - W/"1396-s0iIZ/It90SJrQVS5uVNRPfb7Cw"
       Server:
@@ -77,5 +77,5 @@ http_interactions:
         Interview Score":"2 - worth consideration","Applying for":["recgrjFdvUdTGnDsF"],"Phone
         Screen Interviewer":["recnxTtR21srnQBoG"],"Phone Screen Notes":"Move to in-person."},"createdTime":"2015-11-11T23:11:29.000Z"}]}'
     http_version: 
-  recorded_at: Wed, 13 Dec 2017 17:05:44 GMT
+  recorded_at: Wed, 13 Dec 2017 16:26:57 GMT
 recorded_with: VCR 4.0.0

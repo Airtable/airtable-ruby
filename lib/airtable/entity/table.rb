@@ -15,7 +15,9 @@ module Airtable
         params = {}
         update_default_params(params, options)
         update_sort_options(params, options)
-        fetch_records(params)
+        res = []
+        fetch_records(params.compact, res)
+        res
       end
 
       def raise_correct_error_for(resp)
@@ -26,12 +28,15 @@ module Airtable
         hash.delete(key) || hash.delete(key.to_s)
       end
 
-      def fetch_records(params)
+      def fetch_records(params, res)
         url  = [::Airtable.server_url, @base_id, @name].join('/')
         resp = ::Airtable::Request.new(url, params, @client.api_key).request(:get)
         if resp.success?
-          resp.result['records'].map do |item|
-            ::Airtable::Entity::Record.new(item['id'], fields: item['fields'], created_at: item['createdTime'])
+          resp.result['records'].each do |item|
+            res << ::Airtable::Entity::Record.new(item['id'], fields: item['fields'], created_at: item['createdTime'])
+          end
+          if resp.result['offset']
+            fetch_records(params.merge(offset: resp.result['offset']), res)
           end
         else
           raise_correct_error_for(resp)
@@ -41,6 +46,7 @@ module Airtable
       def update_default_params(params, options)
         params[:fields]     = option_value_for(options, :fields)
         params[:maxRecords] = option_value_for(options, :max_records)
+        params[:offset]     = option_value_for(options, :offset)
         params[:pageSize]   = option_value_for(options, :limit) || PAGE_SIZE
       end
 
@@ -49,6 +55,13 @@ module Airtable
         case sort_option
         when ::Array
           raise ::Airtable::SortOptionsError if sort_option.empty?
+          if sort_option.size == 2
+            add_sort_options(params, sort_option)
+          else
+            sort_option.each do |item|
+              add_sort_options(params, item)
+            end
+          end
         when ::Hash
           add_hash_sort_option(params, sort_option)
         when ::String
@@ -56,14 +69,14 @@ module Airtable
         end
       end
 
-      def add_string_sort_options(params, string)
+      def add_string_sort_option(params, string)
         raise ::Airtable::SortOptionsError if string.nil? || string.empty?
         params[:sort] ||= []
         params[:sort] << { field: string, direction: DEFAULT_DIRECTION }
       end
 
       def add_hash_sort_option(params, hash)
-        raise ::Airtable::SortOptionsError if hash.keys.map(&:to_sym).sort == %i[direction field]
+        raise ::Airtable::SortOptionsError if hash.keys.map(&:to_sym).sort != %i[direction field]
         params[:sort] ||= []
         params[:sort] << hash
       end
@@ -75,8 +88,9 @@ module Airtable
           params[:sort] ||= []
           params[:sort] << { field: sort_option[0], direction: sort_option[1] }
         when ::Hash
-        when ::String
-
+          add_hash_sort_option(params, sort_option)
+        else
+          raise Airtable::SortOptionsError
         end
       end
     end
