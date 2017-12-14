@@ -22,11 +22,19 @@ module Airtable
       end
 
       def create(fields)
-        ::Airtable::Entity::Record.new(nil, fields: fields).save(@base, @name)
+        ::Airtable::Entity::Record.new(nil, fields: fields).__create__(@base, @name)
       end
 
       def update(id, fields)
-        ::Airtable::Entity::Record.new(id, fields: fields).save(@base, @name)
+        ::Airtable::Entity::Record.new(id, fields: fields).__update__(@base, @name)
+      end
+
+      def replace(id, fields)
+        ::Airtable::Entity::Record.new(id, fields: fields).__replace__(@base, @name)
+      end
+
+      def destroy(id)
+        ::Airtable::Entity::Record.new(id).__destroy__(@base, @name)
       end
 
       private

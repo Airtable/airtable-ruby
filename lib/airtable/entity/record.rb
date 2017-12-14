@@ -16,30 +16,34 @@ module Airtable
         @id.nil? || @id.empty?
       end
 
-      def save(base, name)
-        if new_record?
-          __create__(base, name)
-        else
-          __update__(base, name)
-        end
-        self
-      end
-
       def __create__(base, name)
         res = base.__make_request__(:post, name, { fields: fields })
         @id = res['id']
         parse_options(fields: res['fields'], created_at: res['createdTime'])
+        self
       end
 
       def __update__(base, name)
-        res = base.__make_request__(:put, [name, @id].join('/'), { fields: fields })
+        res = base.__make_request__(:patch, [name, @id].join('/'), { fields: fields })
         parse_options(fields: res['fields'])
+        self
       end
 
       def __fetch__(base, path)
         res = base.__make_request__(:get, path, {})
         parse_options(fields: res['fields'], created_at: res['createdTime'])
         self
+      end
+
+      def __replace__(base, name)
+        res = base.__make_request__(:put, [name, @id].join('/'), { fields: fields })
+        parse_options(fields: res['fields'])
+        self
+      end
+
+      def __destroy__(base, name)
+        res = base.__make_request__(:delete, [name, @id].join('/'), {})
+        res['deleted']
       end
 
       def [](key)

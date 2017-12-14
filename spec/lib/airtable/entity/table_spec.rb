@@ -156,4 +156,26 @@ RSpec.describe ::Airtable::Entity::Table, vcr: true do
     end
   end
 
+  context '#replace' do
+    it 'should replace record' do
+      id = 'recSIn39bSTqt4Swc'
+      fields = {
+        'Name' => 'Super Dupper Pupper Name'
+      }
+      expect(table_entity.find(id)['Phone']).to eq('(646) 555-4389')
+      record = table_entity.replace(id, fields)
+      expect(record['Name']).to eq(fields['Name'])
+      rec = table_entity.find(id)
+      expect(rec['Name']).to eq(record['Name'])
+      expect(rec['Phone']).to be_nil
+    end
+  end
+
+  context '#destroy' do
+    it 'should remove record' do
+      id = 'recOjo2sDyUYHNSEH'
+      expect(table_entity.destroy(id)).to be_truthy
+    end
+  end
+
 end

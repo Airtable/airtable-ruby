@@ -35,6 +35,49 @@ module Airtable
       ::Net::HTTP::Get.new(url.path + '?' + to_query_hash(body))
     end
 
+    def setup_post_request
+      request      = ::Net::HTTP::Post.new(url.path)
+      request.body = body.to_json
+      request
+    end
+
+    def setup_put_request
+      request      = ::Net::HTTP::Put.new(url.path)
+      request.body = body.to_json
+      request
+    end
+
+    def setup_patch_request
+      request      = ::Net::HTTP::Patch.new(url.path)
+      request.body = body.to_json
+      request
+    end
+
+    def setup_delete_request
+      ::Net::HTTP::Delete.new(url.path)
+    end
+
+    def setup_request(type)
+      case type
+      when :get
+        setup_get_request
+      when :post
+        setup_post_request
+      when :put
+        setup_put_request
+      when :patch
+        setup_patch_request
+      when :delete
+        setup_delete_request
+      end
+    end
+
+    def setup_headers(request)
+      headers.each do |name, value|
+        request[name] = value
+      end
+    end
+
     def to_query_default(key, value)
       "#{CGI.escape(key.to_s)}=#{CGI.escape(value.to_s)}"
     end
@@ -67,35 +110,6 @@ module Airtable
             to_query_default(prefix, value)
           end
         end.join('&')
-      end
-    end
-
-    def setup_post_request
-      request      = ::Net::HTTP::Post.new(url.path)
-      request.body = body.to_json
-      request
-    end
-
-    def setup_put_request
-      request      = ::Net::HTTP::Put.new(url.path)
-      request.body = body.to_json
-      request
-    end
-
-    def setup_request(type)
-      case type
-      when :get
-        setup_get_request
-      when :post
-        setup_post_request
-      when :put
-        setup_put_request
-      end
-    end
-
-    def setup_headers(request)
-      headers.each do |name, value|
-        request[name] = value
       end
     end
   end

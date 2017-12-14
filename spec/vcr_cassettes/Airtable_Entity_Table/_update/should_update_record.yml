@@ -1,7 +1,7 @@
 ---
 http_interactions:
 - request:
-    method: put
+    method: patch
     uri: https://api.airtable.com/v0/appnlJrQ2fxlfRsov/Applicants/recIsbIqSnj72dp0O
     body:
       encoding: UTF-8
@@ -46,7 +46,7 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"id":"recIsbIqSnj72dp0O","fields":{"Name":"Super Dupper Name"},"createdTime":"2017-12-14T17:24:30.931Z"}'
-    http_version: 
+    http_version:
   recorded_at: Thu, 14 Dec 2017 17:31:45 GMT
 - request:
     method: get
@@ -94,6 +94,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"id":"recIsbIqSnj72dp0O","fields":{"Name":"Super Dupper Name"},"createdTime":"2017-12-14T17:24:30.931Z"}'
-    http_version: 
+    http_version:
   recorded_at: Thu, 14 Dec 2017 17:31:46 GMT
 recorded_with: VCR 4.0.0
