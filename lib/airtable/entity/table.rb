@@ -5,42 +5,38 @@ module Airtable
       PAGE_SIZE         = 100
       DEFAULT_DIRECTION = 'asc'.freeze
 
-      def initialize(name, base_id, client)
-        @name    = name
-        @base_id = base_id
-        @client  = client
+      def initialize(base, name)
+        @name = name
+        @base = base
       end
 
-      def records(options = {})
+      def select(options = {})
         params = {}
         update_default_params(params, options)
         update_sort_options(params, options)
-        res = []
-        fetch_records(params.compact, res)
-        res
+        fetch_records(params.compact)
       end
 
-      def raise_correct_error_for(resp)
-        ;
+      def find(id)
+        ::Airtable::Entity::Record.new(id).__fetch__(@base, [@name, id].join('/'))
       end
+
+      def create(fields)
+        url = [::Airtable.server_url, @base_id, @name].join('/')
+        ::Airtable::Entity::Record.new(nil, fields: fields).save(url, @client.api_key)
+      end
+
+      def update(id, fields)
+      end
+
+      private
 
       def option_value_for(hash, key)
         hash.delete(key) || hash.delete(key.to_s)
       end
 
-      def fetch_records(params, res)
-        url  = [::Airtable.server_url, @base_id, @name].join('/')
-        resp = ::Airtable::Request.new(url, params, @client.api_key).request(:get)
-        if resp.success?
-          resp.result['records'].each do |item|
-            res << ::Airtable::Entity::Record.new(item['id'], fields: item['fields'], created_at: item['createdTime'])
-          end
-          if resp.result['offset']
-            fetch_records(params.merge(offset: resp.result['offset']), res)
-          end
-        else
-          raise_correct_error_for(resp)
-        end
+      def fetch_records(params)
+        ::Airtable::Entity::Record.all(@base, @name, params)
       end
 
       def update_default_params(params, options)

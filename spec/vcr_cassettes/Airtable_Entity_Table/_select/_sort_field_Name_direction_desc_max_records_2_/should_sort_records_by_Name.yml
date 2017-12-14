@@ -32,7 +32,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 13 Dec 2017 17:12:37 GMT
+      - Thu, 14 Dec 2017 17:03:47 GMT
       Etag:
       - W/"d4f-L2lRYBpsRwSZC+5vIYM5rC9fB+4"
       Server:
@@ -68,5 +68,5 @@ http_interactions:
         Screen Interviewer":["recnxTtR21srnQBoG"],"Phone Screen Notes":"Good analytical
         skills, very articulate. Proceed to in-person interview."},"createdTime":"2015-11-11T23:19:11.000Z"}]}'
     http_version: 
-  recorded_at: Wed, 13 Dec 2017 17:12:48 GMT
+  recorded_at: Thu, 14 Dec 2017 17:03:49 GMT
 recorded_with: VCR 4.0.0

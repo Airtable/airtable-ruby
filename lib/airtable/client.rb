@@ -16,7 +16,7 @@ module Airtable
     # @param id [String] Id of Base on Airtable
     # @return [::Airtable::Entity::Base] Airtable Base entity object
     def base(id)
-      ::Airtable::Entity::Base.new(id, self)
+      ::Airtable::Entity::Base.new(self, id)
     end
 
     # table("appXXV84QuCy2BPgLk", "Sheet Name")
