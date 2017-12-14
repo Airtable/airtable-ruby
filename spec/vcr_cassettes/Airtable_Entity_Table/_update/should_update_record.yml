@@ -1,0 +1,99 @@
+---
+http_interactions:
+- request:
+    method: put
+    uri: https://api.airtable.com/v0/appnlJrQ2fxlfRsov/Applicants/recIsbIqSnj72dp0O
+    body:
+      encoding: UTF-8
+      string: '{"fields":{"Name":"Super Dupper Name"}}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Bearer key3nfyQojyvXquoR
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - content-type, authorization, content-length, x-requested-with, x-api-version,
+        x-airtable-application-id
+      Access-Control-Allow-Methods:
+      - GET,PUT,POST,PATCH,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 14 Dec 2017 17:31:42 GMT
+      Etag:
+      - W/"69-S72JAuw/B5v79C0cOeqgy+rkf/g"
+      Server:
+      - Tengine
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '105'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"id":"recIsbIqSnj72dp0O","fields":{"Name":"Super Dupper Name"},"createdTime":"2017-12-14T17:24:30.931Z"}'
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 17:31:45 GMT
+- request:
+    method: get
+    uri: https://api.airtable.com/v0/appnlJrQ2fxlfRsov/Applicants/recIsbIqSnj72dp0O
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Bearer key3nfyQojyvXquoR
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - content-type, authorization, content-length, x-requested-with, x-api-version,
+        x-airtable-application-id
+      Access-Control-Allow-Methods:
+      - GET,PUT,POST,PATCH,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 14 Dec 2017 17:31:43 GMT
+      Etag:
+      - W/"69-S72JAuw/B5v79C0cOeqgy+rkf/g"
+      Server:
+      - Tengine
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '105'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"id":"recIsbIqSnj72dp0O","fields":{"Name":"Super Dupper Name"},"createdTime":"2017-12-14T17:24:30.931Z"}'
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 17:31:46 GMT
+recorded_with: VCR 4.0.0

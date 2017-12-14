@@ -22,11 +22,11 @@ module Airtable
       end
 
       def create(fields)
-        url = [::Airtable.server_url, @base_id, @name].join('/')
-        ::Airtable::Entity::Record.new(nil, fields: fields).save(url, @client.api_key)
+        ::Airtable::Entity::Record.new(nil, fields: fields).save(@base, @name)
       end
 
       def update(id, fields)
+        ::Airtable::Entity::Record.new(id, fields: fields).save(@base, @name)
       end
 
       private

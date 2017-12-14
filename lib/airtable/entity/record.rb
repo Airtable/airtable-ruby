@@ -16,22 +16,24 @@ module Airtable
         @id.nil? || @id.empty?
       end
 
-      def save(url, api_key)
+      def save(base, name)
         if new_record?
-          __create__(url, api_key)
+          __create__(base, name)
         else
-          __update__
+          __update__(base, name)
         end
+        self
       end
 
-      def __create__(url, api_key)
-        resp = ::Airtable::Request.new(url, {}, api_key).request(:get)
-        if resp.success?
-
-        end
+      def __create__(base, name)
+        res = base.__make_request__(:post, name, { fields: fields })
+        @id = res['id']
+        parse_options(fields: res['fields'], created_at: res['createdTime'])
       end
 
-      def __update__
+      def __update__(base, name)
+        res = base.__make_request__(:put, [name, @id].join('/'), { fields: fields })
+        parse_options(fields: res['fields'])
       end
 
       def __fetch__(base, path)

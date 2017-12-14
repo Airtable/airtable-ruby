@@ -126,4 +126,34 @@ RSpec.describe ::Airtable::Entity::Table, vcr: true do
     end
   end
 
+  context '#create' do
+    it 'should create new record' do
+
+      fields = {
+        'Name' => 'Super Test Name'
+      }
+      record = table_entity.create(fields)
+      expect(record).to be_a(::Airtable::Entity::Record)
+      expect(record.id).to_not be_nil
+      expect(record.created_at).to be_a(::Time)
+      expect(record.fields).to be_a(::Hash)
+      expect(record['Name']).to eq(fields['Name'])
+      rec = table_entity.find(record.id)
+      expect(rec['Name']).to eq(record['Name'])
+    end
+  end
+
+  context '#update' do
+    it 'should update record' do
+      id = 'recIsbIqSnj72dp0O'
+      fields = {
+        'Name' => 'Super Dupper Name'
+      }
+      record = table_entity.update(id, fields)
+      expect(record['Name']).to eq(fields['Name'])
+      rec = table_entity.find(id)
+      expect(rec['Name']).to eq(record['Name'])
+    end
+  end
+
 end

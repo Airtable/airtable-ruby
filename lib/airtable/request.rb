@@ -1,5 +1,6 @@
 require 'net/http'
 require 'net/https'
+require 'json'
 
 module Airtable
   # Main Object that made all requests to server
@@ -71,7 +72,7 @@ module Airtable
 
     def setup_post_request
       request      = ::Net::HTTP::Post.new(url.path)
-      request.body = body
+      request.body = body.to_json
       request
     end
 
