@@ -4,7 +4,7 @@ require 'pry'
 RSpec.describe ::Airtable::Entity::Table, vcr: true do
   let(:client) {::Airtable::Client.new}
   let(:base_id) {'appnlJrQ2fxlfRsov'}
-  let(:base) {::Airtable::Entity::Base.new(client, base_id) }
+  let(:base) {::Airtable::Entity::Base.new(client, base_id)}
   let(:table_entity) {described_class.new(base, 'Applicants')}
   context '#select' do
     context '()' do
@@ -100,13 +100,39 @@ RSpec.describe ::Airtable::Entity::Table, vcr: true do
 
     context '({sort: ["Name", "desc", "other"]})' do
       it 'should raise ::Airtable::SortOptionsError' do
-        expect { table_entity.select(sort: ["Name", "desc", "other"]) }.to raise_error(::Airtable::SortOptionsError)
+        expect {table_entity.select(sort: ["Name", "desc", "other"])}.to raise_error(::Airtable::SortOptionsError)
       end
     end
 
     context '({sort: {feild: "Name", direction: "desc"}})' do
       it 'should raise ::Airtable::SortOptionsError' do
-        expect { table_entity.select(sort: {feild: "Name", direction: "desc"}) }.to raise_error(::Airtable::SortOptionsError)
+        expect {table_entity.select(sort: { feild: "Name", direction: "desc" })}.to raise_error(::Airtable::SortOptionsError)
+      end
+    end
+
+    context '(fields: ["Name"])' do
+      it 'should collect only specified fields' do
+        res = table_entity.select(fields: ['Name'], max_records: 2)
+        expect(res[0].fields.keys).to eq(['Name'])
+        expect(res[1].fields.keys).to eq(['Name'])
+      end
+    end
+
+    context '(fields: "Test")' do
+      it 'should raise ::Airtable::FieldsOptionsError' do
+        expect {table_entity.select(fields: 'Test')}.to raise_error(::Airtable::FieldsOptionsError)
+      end
+    end
+
+    context '(limit: "Test")' do
+      it 'should raise ::Airtable::LimitOptionsError' do
+        expect {table_entity.select(limit: 'Test')}.to raise_error(::Airtable::LimitOptionsError)
+      end
+    end
+
+    context '(max_records: "Test")' do
+      it 'should raise ::Airtable::MaxRecordsOptionsError' do
+        expect {table_entity.select(max_records: 'Test')}.to raise_error(::Airtable::MaxRecordsOptionsError)
       end
     end
 
@@ -145,7 +171,7 @@ RSpec.describe ::Airtable::Entity::Table, vcr: true do
 
   context '#update' do
     it 'should update record' do
-      id = 'recIsbIqSnj72dp0O'
+      id     = 'recIsbIqSnj72dp0O'
       fields = {
         'Name' => 'Super Dupper Name'
       }
@@ -158,7 +184,7 @@ RSpec.describe ::Airtable::Entity::Table, vcr: true do
 
   context '#replace' do
     it 'should replace record' do
-      id = 'recSIn39bSTqt4Swc'
+      id     = 'recSIn39bSTqt4Swc'
       fields = {
         'Name' => 'Super Dupper Pupper Name'
       }

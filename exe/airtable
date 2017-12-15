@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+$stderr.sync = true
+require 'airtable'
+require 'airtable/cli'
+::Airtable::CLI.start

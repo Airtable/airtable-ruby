@@ -1,3 +1,4 @@
+require 'time'
 # Main object for store Airtable Record entity
 module Airtable
   module Entity

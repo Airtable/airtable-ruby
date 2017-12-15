@@ -14,6 +14,7 @@ module Airtable
         params = {}
         update_default_params(params, options)
         update_sort_options(params, options)
+        validate_params(params)
         fetch_records(params.compact)
       end
 
@@ -52,6 +53,12 @@ module Airtable
         params[:maxRecords] = option_value_for(options, :max_records)
         params[:offset]     = option_value_for(options, :offset)
         params[:pageSize]   = option_value_for(options, :limit) || PAGE_SIZE
+      end
+
+      def validate_params(params)
+        raise ::Airtable::FieldsOptionsError if params[:fields] && !params[:fields].is_a?(::Array)
+        raise ::Airtable::LimitOptionsError if params[:pageSize] && !(params[:pageSize].to_i > 0)
+        raise ::Airtable::MaxRecordsOptionsError if params[:maxRecords] && !(params[:maxRecords].to_i > 0)
       end
 
       def update_sort_options(params, options)
