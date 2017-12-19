@@ -33,28 +33,38 @@ First, be sure to register for an [airtable](https://airtable.com) account, crea
 ```ruby
 # Pass in api key to client
 @client = Airtable::Client.new("keyPCx5W")
+# Or if you have AIRTABLE_KEY varibale you can use
+@client = Airtable::Client.new
 ```
-
 Your API key carries the same privileges as your user account, so be sure to keep it secret!
+
+### Accessing a Base
+
+Now we can access any base in our Airsheet account by referencing the [API docs](https://airtable.com/api):
+
+```ruby
+# Pass in the base id
+@base = @client.table("appPo84QuCy2BPgLk")
+```
 
 ### Accessing a Table
 
 Now we can access any table in our Airsheet account by referencing the [API docs](https://airtable.com/api):
 
 ```ruby
-# Pass in the app key and table name
-@table = @client.table("appPo84QuCy2BPgLk", "Table Name")
+# Pass in the table name
+@table = @base.table("Table Name")
 ```
 
-### Querying Records
+### Batch Querying All Records
 
 Once you have access to a table from above, we can query a set of records in the table with:
 
 ```ruby
-@records = @table.records
+@records = @table.select
 ```
 
-We can specify a `sort` order, `limit`, and `offset` as part of our query:
+We can specify a `sort` order, `limit`, `max_records` and `offset` as part of our query:
 
 ```ruby
 @records = @table.records(:sort => ["Name", :asc], :limit => 50)
@@ -70,16 +80,6 @@ This will return the records based on the query as well as an `offset` for the n
 @bill[:id] # => "rec02sKGVIzU65eV2"
 @bill[:name] # => "Bill Lowry"
 @bill[:email] # => "billery@gmail.com"
-```
-
-Note that you can only request a maximimum of 100 records in a single query. To retrieve more records, use the "batch" feature below.
-
-### Batch Querying All Records
-
-We can also query all records in the table through a series of batch requests with:
-
-```ruby
-@records = @table.all(:sort => ["Name", :asc])
 ```
 
 This executes a variable number of network requests (100 records per batch) to retrieve all records in a sheet.
@@ -119,6 +119,52 @@ Records can be destroyed using the `destroy` method on a table:
 
 ```ruby
 @table.destroy(record)
+```
+
+## Command Line Tool
+
+This gem is include a very simple command line tool which can show basic functionality of service.
+
+```
+$ airtable
+Usage: airtable [options]
+
+Common options:
+    -k, --api_key=KEY                Airtable API key
+    -t, --table NAME                 Table Name
+    -b, --base BASE_ID               Base ID
+    -r, --record RECORD_ID           Record ID
+    -f, --field FIELD_NAME           Field name to update or read
+    -v, --value VALUE                Field value for update
+
+Supported Operations:
+	Get Record (if only RECORD_ID provided)
+	Get Field (if RECORD_ID and FIELD_ID are provided)
+	Update Field (if RECORD_ID, FIELD_ID and VALUE are provided)
+
+    -h, --help                       Show this message
+        --version                    Show version
+```
+
+### Get record's JSON
+
+```
+$ airtable -b base_id -t Table -r record_id
+{"id":"record_id","fields":{...},"createdTime":"2015-11-11 23:05:58 UTC"}
+```
+
+### Get record's field value
+
+```
+$ airtable -b base_id -t Table -r record_id -f field_name
+FIELD_VALUE
+```
+
+### Update record's field value
+
+```
+$ airtable -b base_id -t Table -r record_id -f field_name -v NEW_VALUE
+OK
 ```
 
 ## Contributing

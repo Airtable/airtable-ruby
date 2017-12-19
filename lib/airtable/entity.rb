@@ -1,4 +1,5 @@
 module Airtable
+  # Entity submodule
   module Entity
   end
 end

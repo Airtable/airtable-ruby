@@ -2,6 +2,7 @@ require 'time'
 # Main object for store Airtable Record entity
 module Airtable
   module Entity
+    # Airtable Record entity
     class Record
       extend Forwardable
       attr_reader :id, :created_at, :fields
@@ -18,14 +19,15 @@ module Airtable
       end
 
       def __create__(base, name)
-        res = base.__make_request__(:post, name, { fields: fields })
+        res = base.__make_request__(:post, name, fields: fields)
         @id = res['id']
         parse_options(fields: res['fields'], created_at: res['createdTime'])
         self
       end
 
       def __update__(base, name)
-        res = base.__make_request__(:patch, [name, @id].join('/'), { fields: fields })
+        args = [:patch, [name, @id].join('/'), fields: fields]
+        res  = base.__make_request__(*args)
         parse_options(fields: res['fields'])
         self
       end
@@ -37,7 +39,7 @@ module Airtable
       end
 
       def __replace__(base, name)
-        res = base.__make_request__(:put, [name, @id].join('/'), { fields: fields })
+        res = base.__make_request__(:put, [name, @id].join('/'), fields: fields)
         parse_options(fields: res['fields'])
         self
       end
@@ -66,14 +68,15 @@ module Airtable
 
         def __fetch__(base, name, params, res)
           result = base.__make_request__(:get, name, params)
-          result['records'].each do |item|
-            res << new(item['id'], fields: item['fields'], created_at: item['createdTime'])
+          result['records'].each do |r|
+            args = [
+              r['id'], fields: r['fields'], created_at: r['createdTime']
+            ]
+            res << new(*args)
           end
-          if result['offset']
-            __fetch__(base, name, params.merge(offset: result['offset']), res)
-          end
+          return unless result['offset']
+          __fetch__(base, name, params.merge(offset: result['offset']), res)
         end
-
       end
 
       private
@@ -82,11 +85,10 @@ module Airtable
         if (fields = options.delete(:fields)) && !fields.empty?
           @fields = fields
         end
-        if (created_at = options.delete(:created_at))
-          @created_at = ::Time.parse(created_at)
-        end
+        created_at = options.delete(:created_at)
+        return unless created_at
+        @created_at = ::Time.parse(created_at)
       end
-
     end
   end
 end

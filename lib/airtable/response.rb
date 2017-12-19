@@ -1,17 +1,18 @@
 module Airtable
+  # Response processor class
   class Response
     attr_accessor :raw, :result
 
-    def initialize(raw_response)
-      @raw = raw_response
+    def initialize(raw_resp)
+      @raw = raw_resp
+      body = raw.body
+      ::Airtable.logger.info "Response: #{body}" if ::Airtable.debug?
       begin
-        @result = ::JSON.parse(raw.body)
-        ::Airtable.logger.info "Response: #{@result}"
+        @result = ::JSON.parse(body)
         @success = @raw.code.to_i == 200
       rescue
         @success = false
-        ::Airtable.logger.info "ERROR Response: #{raw.body}"
-        @result = { 'detail' => raw.body } if @result.blank?
+        @result = { 'raw' => body } if @result.blank?
       end
     end
 

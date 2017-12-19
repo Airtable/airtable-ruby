@@ -100,13 +100,13 @@ RSpec.describe ::Airtable::Entity::Table, vcr: true do
 
     context '({sort: ["Name", "desc", "other"]})' do
       it 'should raise ::Airtable::SortOptionsError' do
-        expect {table_entity.select(sort: ["Name", "desc", "other"])}.to raise_error(::Airtable::SortOptionsError)
+        expect {table_entity.select(sort: ["Name", "desc", "other"])}.to raise_error(::Airtable::SortOptionError)
       end
     end
 
     context '({sort: {feild: "Name", direction: "desc"}})' do
       it 'should raise ::Airtable::SortOptionsError' do
-        expect {table_entity.select(sort: { feild: "Name", direction: "desc" })}.to raise_error(::Airtable::SortOptionsError)
+        expect {table_entity.select(sort: { feild: "Name", direction: "desc" })}.to raise_error(::Airtable::SortOptionError)
       end
     end
 
@@ -120,19 +120,19 @@ RSpec.describe ::Airtable::Entity::Table, vcr: true do
 
     context '(fields: "Test")' do
       it 'should raise ::Airtable::FieldsOptionsError' do
-        expect {table_entity.select(fields: 'Test')}.to raise_error(::Airtable::FieldsOptionsError)
+        expect {table_entity.select(fields: 'Test')}.to raise_error(::Airtable::FieldsOptionError)
       end
     end
 
     context '(limit: "Test")' do
       it 'should raise ::Airtable::LimitOptionsError' do
-        expect {table_entity.select(limit: 'Test')}.to raise_error(::Airtable::LimitOptionsError)
+        expect {table_entity.select(limit: 'Test')}.to raise_error(::Airtable::LimitOptionError)
       end
     end
 
     context '(max_records: "Test")' do
       it 'should raise ::Airtable::MaxRecordsOptionsError' do
-        expect {table_entity.select(max_records: 'Test')}.to raise_error(::Airtable::MaxRecordsOptionsError)
+        expect {table_entity.select(max_records: 'Test')}.to raise_error(::Airtable::MaxRecordsOptionError)
       end
     end
 

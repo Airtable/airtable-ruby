@@ -8,6 +8,7 @@ module Airtable
       def initialize(base, name)
         @name = name
         @base = base
+        @args = [@base, @name]
       end
 
       def select(options = {})
@@ -19,23 +20,24 @@ module Airtable
       end
 
       def find(id)
-        ::Airtable::Entity::Record.new(id).__fetch__(@base, [@name, id].join('/'))
+        args = [@base, [@name, id].join('/')]
+        ::Airtable::Entity::Record.new(id).__fetch__(*args)
       end
 
       def create(fields)
-        ::Airtable::Entity::Record.new(nil, fields: fields).__create__(@base, @name)
+        ::Airtable::Entity::Record.new(nil, fields: fields).__create__(*@args)
       end
 
       def update(id, fields)
-        ::Airtable::Entity::Record.new(id, fields: fields).__update__(@base, @name)
+        ::Airtable::Entity::Record.new(id, fields: fields).__update__(*@args)
       end
 
       def replace(id, fields)
-        ::Airtable::Entity::Record.new(id, fields: fields).__replace__(@base, @name)
+        ::Airtable::Entity::Record.new(id, fields: fields).__replace__(*@args)
       end
 
       def destroy(id)
-        ::Airtable::Entity::Record.new(id).__destroy__(@base, @name)
+        ::Airtable::Entity::Record.new(id).__destroy__(*@args)
       end
 
       private
@@ -56,23 +58,20 @@ module Airtable
       end
 
       def validate_params(params)
-        raise ::Airtable::FieldsOptionsError if params[:fields] && !params[:fields].is_a?(::Array)
-        raise ::Airtable::LimitOptionsError if params[:pageSize] && !(params[:pageSize].to_i > 0)
-        raise ::Airtable::MaxRecordsOptionsError if params[:maxRecords] && !(params[:maxRecords].to_i > 0)
+        if params[:fields] && !params[:fields].is_a?(::Array)
+          raise ::Airtable::FieldsOptionError
+        end
+        raise ::Airtable::LimitOptionError if params[:pageSize].to_i <= 0
+        if params[:maxRecords] && params[:maxRecords].to_i <= 0
+          raise ::Airtable::MaxRecordsOptionError
+        end
       end
 
       def update_sort_options(params, options)
         sort_option = option_value_for(options, :sort)
         case sort_option
         when ::Array
-          raise ::Airtable::SortOptionsError if sort_option.empty?
-          if sort_option.size == 2
-            add_sort_options(params, sort_option)
-          else
-            sort_option.each do |item|
-              add_sort_options(params, item)
-            end
-          end
+          add_array_sort_options(params, sort_option)
         when ::Hash
           add_hash_sort_option(params, sort_option)
         when ::String
@@ -80,14 +79,27 @@ module Airtable
         end
       end
 
+      def add_array_sort_options(params, array)
+        raise ::Airtable::SortOptionError if array.empty?
+        if array.size == 2
+          add_sort_options(params, array)
+        else
+          array.each do |item|
+            add_sort_options(params, item)
+          end
+        end
+      end
+
       def add_string_sort_option(params, string)
-        raise ::Airtable::SortOptionsError if string.nil? || string.empty?
+        raise ::Airtable::SortOptionError if string.nil? || string.empty?
         params[:sort] ||= []
         params[:sort] << { field: string, direction: DEFAULT_DIRECTION }
       end
 
       def add_hash_sort_option(params, hash)
-        raise ::Airtable::SortOptionsError if hash.keys.map(&:to_sym).sort != %i[direction field]
+        if hash.keys.map(&:to_sym).sort != %i[direction field]
+          raise ::Airtable::SortOptionError
+        end
         params[:sort] ||= []
         params[:sort] << hash
       end
@@ -95,13 +107,13 @@ module Airtable
       def add_sort_options(params, sort_option)
         case sort_option
         when ::Array
-          raise Airtable::SortOptionsError if sort_option.size != 2
+          raise Airtable::SortOptionError if sort_option.size != 2
           params[:sort] ||= []
           params[:sort] << { field: sort_option[0], direction: sort_option[1] }
         when ::Hash
           add_hash_sort_option(params, sort_option)
         else
-          raise Airtable::SortOptionsError
+          raise Airtable::SortOptionError
         end
       end
     end

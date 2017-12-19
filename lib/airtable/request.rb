@@ -5,6 +5,7 @@ require 'json'
 module Airtable
   # Main Object that made all requests to server
   class Request
+    METHODS = %i[get post put patch delete].freeze
     attr_accessor :url, :body, :headers, :http
 
     def initialize(url, body, token)
@@ -12,6 +13,7 @@ module Airtable
       @body    = body
       @headers = {
         'Authorization' => "Bearer #{token}",
+        'User-Agent'    => "Airtable gem v#{::Airtable::VERSION}",
         'Content-Type'  => 'application/json'
       }
     end
@@ -58,18 +60,8 @@ module Airtable
     end
 
     def setup_request(type)
-      case type
-      when :get
-        setup_get_request
-      when :post
-        setup_post_request
-      when :put
-        setup_put_request
-      when :patch
-        setup_patch_request
-      when :delete
-        setup_delete_request
-      end
+      raise ::Airtable::BrokenMethod unless METHODS.include?(type)
+      __send__("setup_#{type}_request")
     end
 
     def setup_headers(request)
@@ -100,17 +92,21 @@ module Airtable
       if array.empty?
         to_query_default(prefix, nil)
       else
-        array.collect do |value|
-          case value
-          when ::Hash
-            to_query_hash(value, prefix)
-          when ::Array
-            to_query_array(value, prefix)
-          else
-            to_query_default(prefix, value)
-          end
-        end.join('&')
+        to_query_collect(array, prefix)
       end
+    end
+
+    def to_query_collect(array, prefix)
+      array.collect do |value|
+        case value
+        when ::Hash
+          to_query_hash(value, prefix)
+        when ::Array
+          to_query_array(value, prefix)
+        else
+          to_query_default(prefix, value)
+        end
+      end.join('&')
     end
   end
 end

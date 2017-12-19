@@ -13,7 +13,8 @@ module Airtable
 
       def __make_request__(method, path, data)
         url  = [::Airtable.server_url, @id, path].join('/')
-        resp = ::Airtable::Request.new(url, data, @client.api_key).request(method)
+        resp = ::Airtable::Request.new(url, data, @client.api_key)
+                                  .request(method)
         if resp.success?
           resp.result
         else
@@ -21,9 +22,7 @@ module Airtable
         end
       end
 
-      def raise_correct_error_for(resp)
-        ;
-      end
+      def raise_correct_error_for(resp); end
     end
   end
 end
