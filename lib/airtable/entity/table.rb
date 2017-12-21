@@ -62,9 +62,11 @@ module Airtable
           raise ::Airtable::FieldsOptionError
         end
         raise ::Airtable::LimitOptionError if params[:pageSize].to_i <= 0
+        # rubocop:disable all
         if params[:maxRecords] && params[:maxRecords].to_i <= 0
           raise ::Airtable::MaxRecordsOptionError
         end
+        # rubocop:enable all
       end
 
       def update_sort_options(params, options)

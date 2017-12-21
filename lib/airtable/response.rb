@@ -7,21 +7,12 @@ module Airtable
       @raw = raw_resp
       body = raw.body
       ::Airtable.logger.info "Response: #{body}" if ::Airtable.debug?
-      begin
-        @result = ::JSON.parse(body)
-        @success = @raw.code.to_i == 200
-      rescue
-        @success = false
-        @result = { 'raw' => body } if @result.blank?
-      end
+      @result  = ::JSON.parse(body)
+      @success = @raw.code.to_i == 200
     end
 
     def success?
       @success
-    end
-
-    def rate_limited?
-      @raw.code.to_i == 429
     end
   end
 end

@@ -1,6 +1,7 @@
 require 'optparse'
 require 'airtable'
 
+# rubocop:disable all
 module Airtable
   # Command line Class
   class CLI
@@ -117,3 +118,4 @@ module Airtable
     end
   end
 end
+# rubocop:enable all
