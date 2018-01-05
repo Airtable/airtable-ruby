@@ -7,6 +7,7 @@ module Airtable
   class CLI
     def initialize(args)
       trap_interrupt
+      @operation = args.shift
       @args    = args
       @options = {}
       @parser  = OptionParser.new
@@ -30,7 +31,7 @@ module Airtable
     end
 
     def add_banner
-      @parser.banner = 'Usage: airtable [options]'
+      @parser.banner = 'Usage: airtable operation options'
       @parser.separator ''
     end
 
@@ -70,26 +71,56 @@ module Airtable
     def add_supported_operations
       @parser.separator ''
       @parser.separator 'Supported Operations:'
-      @parser.separator "\tGet Record (if only RECORD_ID provided)"
-      @parser.separator "\tGet Field (if RECORD_ID and FIELD_ID are provided)"
-      @parser.separator "\tUpdate Field (if RECORD_ID, FIELD_ID and VALUE are provided)"
+      @parser.separator "\tget - Get Record/Field"
+      @parser.separator "\tupdate - Update Field"
+      @parser.separator ''
+      @parser.separator 'Examples:'
+      @parser.separator "\tairtable get -B Base -t Table"
+      @parser.separator "\tairtable get -B Base -t Table -r RECORD_ID"
+      @parser.separator "\tairtable get -B Base -t Table -f FIELD_NAME"
+      @parser.separator "\tairtable get -B Base -t Table -f FIELD_NAME -r RECORD_ID"
+      @parser.separator "\tairtable update -b Base -t table -r RECORD_ID -f FIELD_NAME -v newValue"
       @parser.separator ''
     end
 
     def valid_options?
       @options[:table_name] && !@options[:table_name].empty? &&
-        @options[:base_id] && !@options[:base_id].empty? &&
-        @options[:record_id] && !@options[:record_id].empty?
+        @options[:base_id] && !@options[:base_id].empty?
+    end
+
+    def record_id?
+      @options[:record_id] && !@options[:record_id].empty?
+    end
+
+    def field_name?
+      @options[:field_name] && !@options[:field_name].empty?
     end
 
     def run_operation
-      if @options[:field_value] && !@options[:field_value].empty? && @options[:field_name] && !@options[:field_name].empty?
+      case @operation
+      when "get"
+        case
+        when record_id? && field_name?
+          print_field  
+        when record_id? && !field_name?
+          print_record
+        when !record_id? && field_name?
+          print_fields
+        else
+          print_records
+        end
+      when "update"
+        [:field_value, :field_name, :record_id].each do |key|
+          return if !@options[key] || @options[key].empty?
+        end
         update_field
-      elsif @options[:field_name] && !@options[:field_name].empty?
-        print_field
-      else
-        print_record
       end
+    end
+    
+    def print_records
+      puts (::Airtable::Client.new(@options[:api_key]).base(@options[:base_id]).table(@options[:table_name]).select.map do |record|
+        { id: record.id, fields: record.fields, createdTime: record.created_at }
+      end).to_json
     end
 
     def print_record
@@ -100,6 +131,12 @@ module Airtable
     def print_field
       record = ::Airtable::Client.new(@options[:api_key]).base(@options[:base_id]).table(@options[:table_name]).find(@options[:record_id])
       puts record.fields[@options[:field_name]]
+    end
+
+    def print_fields
+      ::Airtable::Client.new(@options[:api_key]).base(@options[:base_id]).table(@options[:table_name]).select.each do |record|
+        puts record.fields[@options[:field_name]]
+      end
     end
 
     def update_field

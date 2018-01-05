@@ -136,6 +136,29 @@ RSpec.describe ::Airtable::Entity::Table, vcr: true do
       end
     end
 
+    context '({view: ["view"]})' do
+      it 'should raise ::Airtable::ViewOptionsError' do
+        expect {table_entity.select(view: ['view'])}.to raise_error(::Airtable::ViewOptionError)
+      end
+    end
+
+    context '({view: ""})' do
+      it 'should raise ::Airtable::ViewOptionsError' do
+        expect {table_entity.select(view: '')}.to raise_error(::Airtable::ViewOptionError)
+      end
+    end
+
+    context '({filter_by_formula: ""})' do
+      it 'should raise ::Airtable::ViewOptionsError' do
+        expect {table_entity.select(filter_by_formula: '')}.to raise_error(::Airtable::FilterByFormulaOptionError)
+      end
+    end
+
+    context '({filter_by_formula: ["view"]})' do
+      it 'should raise ::Airtable::FilterByFormulaOptionsError' do
+        expect {table_entity.select(filter_by_formula: ['view'])}.to raise_error(::Airtable::FilterByFormulaOptionError)
+      end
+    end
   end
   context '#find' do
     it 'should return a one record' do

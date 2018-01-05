@@ -5,8 +5,8 @@ require 'airtable/version'
 Gem::Specification.new do |spec|
   spec.name        = 'airtable'
   spec.version     = Airtable::VERSION
-  spec.authors     = ['Nathan Esquenazi', 'Alexander Sorokin']
-  spec.email       = ['nesquena@gmail.com', 'syrnick@gmail.com']
+  spec.authors     = ['Nathan Esquenazi', 'Alexander Sorokin', 'Oleksandr Simonov']
+  spec.email       = ['nesquena@gmail.com', 'syrnick@gmail.com', 'oleksandr@simonov.me']
   spec.summary     = 'Easily connect to airtable data using ruby'
   spec.description = 'Easily connect to airtable data using ruby with access to all of the airtable features.'
   spec.homepage    = 'https://github.com/nesquena/airtable-ruby'

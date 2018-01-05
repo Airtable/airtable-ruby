@@ -33,6 +33,20 @@ module Airtable
     end
   end
 
+  # view is empty
+  class ViewOptionError < ::ArgumentError
+    def initialize
+      super('Invalid view option format.')
+    end
+  end
+
+  # filter by formula is empty
+  class FilterByFormulaOptionError < ::ArgumentError
+    def initialize
+      super('Invalid filter_by_formula option format.')
+    end
+  end
+
   # Request error
   class RequestError < StandardError
     attr_reader :body
@@ -81,9 +95,9 @@ module Airtable
   # too many requests
   class TooManyRequestsError < ::Airtable::RequestError
     def initialize(body)
-      # rubocop:disable Metrics/LineLength
-      super(body, 'You have made too many requests in a short period of time. Please retry your request later')
-      # rubocop:enable Metrics/LineLength
+      super(body,
+        'You have made too many requests in a short period of time. Please retry your request later'
+      )
     end
   end
 
@@ -97,9 +111,7 @@ module Airtable
   # service unavailable
   class ServiceUnavailableError < ::Airtable::RequestError
     def initialize(body)
-      # rubocop:disable Metrics/LineLength
       super(body, 'The service is temporarily unavailable. Please retry shortly.')
-      # rubocop:enable Metrics/LineLength
     end
   end
 end

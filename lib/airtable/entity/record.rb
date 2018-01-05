@@ -7,8 +7,6 @@ module Airtable
       extend Forwardable
       attr_reader :id, :created_at, :fields
 
-      def_delegators :@fields, :[], :[]=
-
       def initialize(id, options = {})
         @id = id
         parse_options(options)
@@ -18,15 +16,15 @@ module Airtable
         @id.nil? || @id.empty?
       end
 
-      def __create__(base, name)
-        res = base.__make_request__(:post, name, fields: fields)
+      def __create__(base, table_name)
+        res = base.__make_request__(:post, table_name, fields: fields)
         @id = res['id']
         parse_options(fields: res['fields'], created_at: res['createdTime'])
         self
       end
 
-      def __update__(base, name)
-        args = [:patch, [name, @id].join('/'), fields: fields]
+      def __update__(base, table_name)
+        args = [:patch, [table_name, @id].join('/'), fields: fields]
         res  = base.__make_request__(*args)
         parse_options(fields: res['fields'])
         self
@@ -38,14 +36,14 @@ module Airtable
         self
       end
 
-      def __replace__(base, name)
-        res = base.__make_request__(:put, [name, @id].join('/'), fields: fields)
+      def __replace__(base, table_name)
+        res = base.__make_request__(:put, [table_name, @id].join('/'), fields: fields)
         parse_options(fields: res['fields'])
         self
       end
 
-      def __destroy__(base, name)
-        res = base.__make_request__(:delete, [name, @id].join('/'), {})
+      def __destroy__(base, table_name)
+        res = base.__make_request__(:delete, [table_name, @id].join('/'), {})
         res['deleted']
       end
 
@@ -58,16 +56,16 @@ module Airtable
       end
 
       class << self
-        def all(base, name, params)
+        def all(base, table_name, params)
           res = []
-          __fetch__(base, name, params, res)
+          __fetch__(base, table_name, params, res)
           res
         end
 
         private
 
-        def __fetch__(base, name, params, res)
-          result = base.__make_request__(:get, name, params)
+        def __fetch__(base, table_name, params, res)
+          result = base.__make_request__(:get, table_name, params)
           result['records'].each do |r|
             args = [
               r['id'], fields: r['fields'], created_at: r['createdTime']
@@ -75,7 +73,7 @@ module Airtable
             res << new(*args)
           end
           return unless result['offset']
-          __fetch__(base, name, params.merge(offset: result['offset']), res)
+          __fetch__(base, table_name, params.merge(offset: result['offset']), res)
         end
       end
 

@@ -12,7 +12,7 @@ module Airtable
       end
 
       def __make_request__(method, path, data)
-        url  = [::Airtable.server_url, @id, path].join('/')
+        url  = [::Airtable.server_url, CGI.escape(@id), path].join('/')
         resp = ::Airtable::Request.new(url, data, @client.api_key)
                                   .request(method)
         if resp.success?

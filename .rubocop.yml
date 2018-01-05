@@ -2,3 +2,10 @@ AllCops:
   Exclude:
     - 'spec/**/*'
   TargetRubyVersion: 2.1
+Metrics/LineLength:
+  Max: 100
+Metrics/ClassLength:
+  Exclude:
+    - "lib/airtable/entity/table.rb"
+Metrics/AbcSize:
+  Max: 16

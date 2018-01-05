@@ -1,3 +1,4 @@
+require 'cgi'
 module Airtable
   module Entity
     # Airtable Table entity
@@ -6,9 +7,9 @@ module Airtable
       DEFAULT_DIRECTION = 'asc'.freeze
 
       def initialize(base, name)
-        @name = name
+        @name = CGI.escape(name)
         @base = base
-        @args = [@base, @name]
+        @table_path = [@base, @name]
       end
 
       def select(options = {})
@@ -20,24 +21,24 @@ module Airtable
       end
 
       def find(id)
-        args = [@base, [@name, id].join('/')]
-        ::Airtable::Entity::Record.new(id).__fetch__(*args)
+        table_path = [@base, [@name, id].join('/')]
+        ::Airtable::Entity::Record.new(id).__fetch__(*table_path)
       end
 
       def create(fields)
-        ::Airtable::Entity::Record.new(nil, fields: fields).__create__(*@args)
+        ::Airtable::Entity::Record.new(nil, fields: fields).__create__(*@table_path)
       end
 
       def update(id, fields)
-        ::Airtable::Entity::Record.new(id, fields: fields).__update__(*@args)
+        ::Airtable::Entity::Record.new(id, fields: fields).__update__(*@table_path)
       end
 
       def replace(id, fields)
-        ::Airtable::Entity::Record.new(id, fields: fields).__replace__(*@args)
+        ::Airtable::Entity::Record.new(id, fields: fields).__replace__(*@table_path)
       end
 
       def destroy(id)
-        ::Airtable::Entity::Record.new(id).__destroy__(*@args)
+        ::Airtable::Entity::Record.new(id).__destroy__(*@table_path)
       end
 
       private
@@ -51,22 +52,34 @@ module Airtable
       end
 
       def update_default_params(params, options)
-        params[:fields]     = option_value_for(options, :fields)
-        params[:maxRecords] = option_value_for(options, :max_records)
-        params[:offset]     = option_value_for(options, :offset)
-        params[:pageSize]   = option_value_for(options, :limit) || PAGE_SIZE
+        params[:fields]           = option_value_for(options, :fields)
+        params[:maxRecords]       = option_value_for(options, :max_records)
+        params[:offset]           = option_value_for(options, :offset)
+        params[:view]             = option_value_for(options, :view)
+        params[:filterByFormula]  = option_value_for(options, :filter_by_formula)
+        params[:pageSize]         = option_value_for(options, :limit) || PAGE_SIZE
       end
 
       def validate_params(params)
-        if params[:fields] && !params[:fields].is_a?(::Array)
-          raise ::Airtable::FieldsOptionError
-        end
+        validate_fields(params[:fields])
+        param_not_empty?(params[:view], ::Airtable::ViewOptionError)
+        param_not_empty?(params[:filterByFormula], ::Airtable::FilterByFormulaOptionError)
         raise ::Airtable::LimitOptionError if params[:pageSize].to_i <= 0
         # rubocop:disable all
         if params[:maxRecords] && params[:maxRecords].to_i <= 0
           raise ::Airtable::MaxRecordsOptionError
         end
         # rubocop:enable all
+      end
+
+      def validate_fields(value)
+        return if !value || value.is_a?(::Array)
+        raise ::Airtable::FieldsOptionError
+      end
+
+      def param_not_empty?(value, klass)
+        return if !value || (!value.empty? && value.is_a?(::String))
+        raise klass
       end
 
       def update_sort_options(params, options)

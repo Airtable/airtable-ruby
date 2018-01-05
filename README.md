@@ -33,14 +33,20 @@ First, be sure to register for an [airtable](https://airtable.com) account, crea
 ```ruby
 # Pass in api key to client
 @client = Airtable::Client.new("keyPCx5W")
-# Or if you have AIRTABLE_KEY varibale you can use
+```
+
+Also you can have `AIRTABLE_KEY` environment variable which is your API key.
+
+```ruby
+# if you have AIRTABLE_KEY variable
 @client = Airtable::Client.new
 ```
+
 Your API key carries the same privileges as your user account, so be sure to keep it secret!
 
 ### Accessing a Base
 
-Now we can access any base in our Airsheet account by referencing the [API docs](https://airtable.com/api):
+Now we can access any base in our Airtable account by referencing the [API docs](https://airtable.com/api):
 
 ```ruby
 # Pass in the base id
@@ -49,7 +55,7 @@ Now we can access any base in our Airsheet account by referencing the [API docs]
 
 ### Accessing a Table
 
-Now we can access any table in our Airsheet account by referencing the [API docs](https://airtable.com/api):
+Now we can access any table in our Airtable account by referencing the [API docs](https://airtable.com/api):
 
 ```ruby
 # Pass in the table name
@@ -123,11 +129,11 @@ Records can be destroyed using the `destroy` method on a table:
 
 ## Command Line Tool
 
-This gem is include a very simple command line tool which can show basic functionality of service.
+This gem includes a simple command line tool which shows the basic functionality of the service.
 
 ```
 $ airtable
-Usage: airtable [options]
+Usage: airtable operation options
 
 Common options:
     -k, --api_key=KEY                Airtable API key
@@ -138,9 +144,15 @@ Common options:
     -v, --value VALUE                Field value for update
 
 Supported Operations:
-	Get Record (if only RECORD_ID provided)
-	Get Field (if RECORD_ID and FIELD_ID are provided)
-	Update Field (if RECORD_ID, FIELD_ID and VALUE are provided)
+	get - Get Record/Field
+	update - Update Field
+
+Examples:
+	airtable get -B Base -t Table
+	airtable get -B Base -t Table -r RECORD_ID
+	airtable get -B Base -t Table -f FIELD_NAME
+	airtable get -B Base -t Table -f FIELD_NAME -r RECORD_ID
+	airtable update -b Base -t table -r RECORD_ID -f FIELD_NAME -v newValue
 
     -h, --help                       Show this message
         --version                    Show version
@@ -149,21 +161,21 @@ Supported Operations:
 ### Get record's JSON
 
 ```
-$ airtable -b base_id -t Table -r record_id
+$ airtable get -b base_id -t Table -r record_id
 {"id":"record_id","fields":{...},"createdTime":"2015-11-11 23:05:58 UTC"}
 ```
 
 ### Get record's field value
 
 ```
-$ airtable -b base_id -t Table -r record_id -f field_name
+$ airtable get -b base_id -t Table -r record_id -f field_name
 FIELD_VALUE
 ```
 
 ### Update record's field value
 
 ```
-$ airtable -b base_id -t Table -r record_id -f field_name -v NEW_VALUE
+$ airtable update -b base_id -t Table -r record_id -f field_name -v NEW_VALUE
 OK
 ```
 
