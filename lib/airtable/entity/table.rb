@@ -6,10 +6,17 @@ module Airtable
       PAGE_SIZE         = 100
       DEFAULT_DIRECTION = 'asc'.freeze
 
+      attr_reader :name, :base
+
       def initialize(base, name)
-        @name = CGI.escape(name)
+        @name = name
         @base = base
-        @table_path = [@base, @name]
+        @url_name = url_encode(@name)
+        @table_path = [@base, @url_name]
+      end
+
+      def url_encode(str)
+        URI.escape(str, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
       end
 
       def select(options = {})
@@ -21,7 +28,7 @@ module Airtable
       end
 
       def find(id)
-        table_path = [@base, [@name, id].join('/')]
+        table_path = [@base, [@url_name, id].join('/')]
         ::Airtable::Entity::Record.new(id).__fetch__(*table_path)
       end
 
@@ -48,7 +55,7 @@ module Airtable
       end
 
       def fetch_records(params)
-        ::Airtable::Entity::Record.all(@base, @name, params)
+        ::Airtable::Entity::Record.all(@base, @url_name, params)
       end
 
       def update_default_params(params, options)
@@ -57,7 +64,7 @@ module Airtable
         params[:offset]           = option_value_for(options, :offset)
         params[:view]             = option_value_for(options, :view)
         params[:filterByFormula]  = option_value_for(options, :filter_by_formula)
-        params[:pageSize]         = option_value_for(options, :limit) || PAGE_SIZE
+        params[:pageSize]         = option_value_for(options, :page_size) || PAGE_SIZE
       end
 
       def validate_params(params)

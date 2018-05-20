@@ -70,10 +70,10 @@ Once you have access to a table from above, we can query a set of records in the
 @records = @table.select
 ```
 
-We can specify a `sort` order, `limit`, `max_records` and `offset` as part of our query:
+We can specify a `sort` order, `per_page`, `max_records` and `offset` as part of our query:
 
 ```ruby
-@records = @table.records(:sort => ["Name", :asc], :limit => 50)
+@records = @table.records(:sort => ["Name", :asc], :page_size => 50)
 @records # => [#<Airtable::Record :name=>"Bill Lowry", :email=>"billery@gmail.com">, ...]
 @records.offset #=> "itrEN2TCbrcSN2BMs"
 ```

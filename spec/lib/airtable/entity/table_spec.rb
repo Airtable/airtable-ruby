@@ -32,9 +32,9 @@ RSpec.describe ::Airtable::Entity::Table, vcr: true do
       end
     end
 
-    context '({limit: 2})' do
+    context '({page_size: 2})' do
       it 'should return all records records' do
-        expect(table_entity.select(limit: 2).size).to eq(3)
+        expect(table_entity.select(page_size: 2).size).to eq(2)
       end
     end
 
@@ -124,9 +124,9 @@ RSpec.describe ::Airtable::Entity::Table, vcr: true do
       end
     end
 
-    context '(limit: "Test")' do
+    context '(per_page: "Test")' do
       it 'should raise ::Airtable::LimitOptionsError' do
-        expect {table_entity.select(limit: 'Test')}.to raise_error(::Airtable::LimitOptionError)
+        expect {table_entity.select(page_size: 'Test')}.to raise_error(::Airtable::LimitOptionError)
       end
     end
 
