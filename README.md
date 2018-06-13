@@ -84,6 +84,15 @@ We can also query all records in the table through a series of batch requests wi
 
 This executes a variable number of network requests (100 records per batch) to retrieve all records in a sheet.
 
+We can also use  `select` method to query based on specific conditions using `formula` parameter
+
+```ruby
+@records = @table.select(sort: ["Order", "asc"], formula: "Active = 1")
+```
+
+This will return all the records that has `Active` column value as `true` from table.
+
+
 ### Finding a Record
 
 Records can be queried by `id` using the `find` method on a table:
