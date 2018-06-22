@@ -1,0 +1,52 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.airtable.com/v0/appnlJrQ2fxlfRsov/Applicants?pageSize=100&view%5B%5D=view
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Airtable gem v0.2.0
+      Authorization:
+      - Bearer key3nfyQojyvXquoR
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 422
+      message: Unprocessable Entity
+    headers:
+      Access-Control-Allow-Headers:
+      - content-type, authorization, content-length, x-requested-with, x-api-version,
+        x-airtable-application-id
+      Access-Control-Allow-Methods:
+      - GET,PUT,POST,PATCH,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 05 Jan 2018 10:13:17 GMT
+      Etag:
+      - W/"7f-ic7Ppjtti07fW0oQKWhpH6lrz8A"
+      Server:
+      - Tengine
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '127'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"error":{"type":"INVALID_REQUEST_UNKNOWN","message":"Invalid request:
+        parameter validation failed. Check your request data."}}'
+    http_version: 
+  recorded_at: Fri, 05 Jan 2018 10:13:19 GMT
+recorded_with: VCR 4.0.0

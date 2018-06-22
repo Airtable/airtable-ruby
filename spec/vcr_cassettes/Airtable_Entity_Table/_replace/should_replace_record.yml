@@ -1,0 +1,158 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.airtable.com/v0/appnlJrQ2fxlfRsov/Applicants/recSIn39bSTqt4Swc
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Bearer key3nfyQojyvXquoR
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - content-type, authorization, content-length, x-requested-with, x-api-version,
+        x-airtable-application-id
+      Access-Control-Allow-Methods:
+      - GET,PUT,POST,PATCH,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 14 Dec 2017 17:46:56 GMT
+      Etag:
+      - W/"698-3AuHK2TpKh22V1BQ3ybhvB18XCw"
+      Server:
+      - Tengine
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '888'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":"recSIn39bSTqt4Swc","fields":{"Email Address":"ohuxley@example.com","Phone
+        Screen Score":"3 - good candidate","Onsite Interview Date":"2013-02-19","Stage":"Interviewing","Onsite
+        Interview Notes":"Owldous was impressive overall, and he has a lot of experience
+        in the corporate world. But if he were to join with a sports team, he''d still
+        have a lot to learn about the industry, e.g., I asked him for his opinion
+        on Leon the Lion''s recent resignation and he responded, \"Whooo?\"","Phone":"(646)
+        555-4389","Phone Screen Date":"2013-02-11","Name":"Owldous Huxley","Onsite
+        Interviewer":["recdnQmTV3Dxn3Apz"],"Attachments":[{"id":"attxKBp3Hb4FJH2I8","url":"https://dl.airtable.com/1ghGlZqKTViBcofjpPMC_owl.jpg","filename":"owl.jpg","size":242886,"type":"image/jpeg","thumbnails":{"small":{"url":"https://dl.airtable.com/dFcZepTFCeG0YUXQSOrA_owl.jpg","width":54,"height":36},"large":{"url":"https://dl.airtable.com/QSkAheQ2SFuD3txaTgge_owl.jpg","width":256,"height":171}}},{"id":"attZJp9i2TJ4Z5xeM","url":"https://dl.airtable.com/WwYtwDVURFCGHCoipxhM_Resume%20(O.%20Huxley).docx","filename":"Resume
+        (O. Huxley).docx","size":16443,"type":"application/vnd.openxmlformats-officedocument.wordprocessingml.document","thumbnails":{"small":{"url":"https://dl.airtable.com/attZJp9i2TJ4Z5xeM-28x36.png","width":28,"height":36},"large":{"url":"https://dl.airtable.com/attZJp9i2TJ4Z5xeM-512x663.png","width":512,"height":663}}}],"Onsite
+        Interview Score":"3 - good candidate","Applying for":["recgrjFdvUdTGnDsF"],"Phone
+        Screen Interviewer":["recnxTtR21srnQBoG"],"Phone Screen Notes":"Good analytical
+        skills, very articulate. Proceed to in-person interview."},"createdTime":"2015-11-11T23:19:11.000Z"}'
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 17:47:00 GMT
+- request:
+    method: put
+    uri: https://api.airtable.com/v0/appnlJrQ2fxlfRsov/Applicants/recSIn39bSTqt4Swc
+    body:
+      encoding: UTF-8
+      string: '{"fields":{"Name":"Super Dupper Pupper Name"}}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Bearer key3nfyQojyvXquoR
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - content-type, authorization, content-length, x-requested-with, x-api-version,
+        x-airtable-application-id
+      Access-Control-Allow-Methods:
+      - GET,PUT,POST,PATCH,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 14 Dec 2017 17:46:58 GMT
+      Etag:
+      - W/"70-fJeV0f8Rv4gryp/FzVC28KLqPm0"
+      Server:
+      - Tengine
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '112'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"id":"recSIn39bSTqt4Swc","fields":{"Name":"Super Dupper Pupper Name"},"createdTime":"2015-11-11T23:19:11.000Z"}'
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 17:47:02 GMT
+- request:
+    method: get
+    uri: https://api.airtable.com/v0/appnlJrQ2fxlfRsov/Applicants/recSIn39bSTqt4Swc
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Bearer key3nfyQojyvXquoR
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - content-type, authorization, content-length, x-requested-with, x-api-version,
+        x-airtable-application-id
+      Access-Control-Allow-Methods:
+      - GET,PUT,POST,PATCH,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 14 Dec 2017 17:47:00 GMT
+      Etag:
+      - W/"70-fJeV0f8Rv4gryp/FzVC28KLqPm0"
+      Server:
+      - Tengine
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '112'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"id":"recSIn39bSTqt4Swc","fields":{"Name":"Super Dupper Pupper Name"},"createdTime":"2015-11-11T23:19:11.000Z"}'
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 17:47:03 GMT
+recorded_with: VCR 4.0.0

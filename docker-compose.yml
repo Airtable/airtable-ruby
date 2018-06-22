@@ -1,0 +1,15 @@
+version: '2.1'
+volumes:
+  app-gems:
+    driver: local
+services:
+  lib:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env.docker
+    volumes:
+      - app-gems:/usr/local/bundle
+      - .:/home/lib
+

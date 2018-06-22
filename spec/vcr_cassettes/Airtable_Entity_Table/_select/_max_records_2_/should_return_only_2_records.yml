@@ -1,0 +1,70 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.airtable.com/v0/appnlJrQ2fxlfRsov/Applicants?maxRecords=2&pageSize=100
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Bearer key3nfyQojyvXquoR
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - content-type, authorization, content-length, x-requested-with, x-api-version,
+        x-airtable-application-id
+      Access-Control-Allow-Methods:
+      - GET,PUT,POST,PATCH,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 14 Dec 2017 17:03:40 GMT
+      Etag:
+      - W/"ced-6o2UVrJhZP7zN/aRnJse9JOltJM"
+      Server:
+      - Tengine
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '1343'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"records":[{"id":"recQes7d2DCuEcGe0","fields":{"Email Address":"c.potato@example.com","Phone
+        Screen Score":"2 - worth consideration","Onsite Interview Date":"2013-02-14","Stage":"Decision
+        Needed","Onsite Interview Notes":"Seems like a really hard worker, and has
+        a great attitude. Very observant: He''s got eyes everywhere. But I am concerned
+        that he won''t be able to think outside the bag.","Phone":"(208) 555-0505","Phone
+        Screen Date":"2013-02-07","Name":"Chippy the Potato","Onsite Interviewer":["recdnQmTV3Dxn3Apz"],"Attachments":[{"id":"attgK5ha1ajpVWOSY","url":"https://dl.airtable.com/xwv2ejXtTBqbTqjcnbQi_Chippypotato.jpg","filename":"Chippypotato.jpg","size":59402,"type":"image/jpeg","thumbnails":{"small":{"url":"https://dl.airtable.com/g7BoJwauSyOZIdtoQALf_Chippypotato.jpg","width":27,"height":36},"large":{"url":"https://dl.airtable.com/IRqeRk4sTkud3Ga12uYI_Chippypotato.jpg","width":256,"height":341}}},{"id":"attU5T1mSPQ8r3nJ6","url":"https://dl.airtable.com/e6kCK3Z0SUS6hhCUoKcD_chippypotatoresume.docx","filename":"chippypotatoresume.docx","size":127681,"type":"application/vnd.openxmlformats-officedocument.wordprocessingml.document","thumbnails":{"small":{"url":"https://dl.airtable.com/attU5T1mSPQ8r3nJ6-28x36.png","width":28,"height":36},"large":{"url":"https://dl.airtable.com/attU5T1mSPQ8r3nJ6-256x331.png","width":256,"height":331}}}],"Onsite
+        Interview Score":"2 - worth consideration","Applying for":["recYPK7fwrFojHO9H"],"Phone
+        Screen Interviewer":["recmtSmO51zqqWAqs"],"Phone Screen Notes":"Questionable,
+        but tentatively move to on-site interview"},"createdTime":"2015-11-11T23:05:58.000Z"},{"id":"recSIn39bSTqt4Swc","fields":{"Email
+        Address":"ohuxley@example.com","Phone Screen Score":"3 - good candidate","Onsite
+        Interview Date":"2013-02-19","Stage":"Interviewing","Onsite Interview Notes":"Owldous
+        was impressive overall, and he has a lot of experience in the corporate world.
+        But if he were to join with a sports team, he''d still have a lot to learn
+        about the industry, e.g., I asked him for his opinion on Leon the Lion''s
+        recent resignation and he responded, \"Whooo?\"","Phone":"(646) 555-4389","Phone
+        Screen Date":"2013-02-11","Name":"Owldous Huxley","Onsite Interviewer":["recdnQmTV3Dxn3Apz"],"Attachments":[{"id":"attxKBp3Hb4FJH2I8","url":"https://dl.airtable.com/1ghGlZqKTViBcofjpPMC_owl.jpg","filename":"owl.jpg","size":242886,"type":"image/jpeg","thumbnails":{"small":{"url":"https://dl.airtable.com/dFcZepTFCeG0YUXQSOrA_owl.jpg","width":54,"height":36},"large":{"url":"https://dl.airtable.com/QSkAheQ2SFuD3txaTgge_owl.jpg","width":256,"height":171}}},{"id":"attZJp9i2TJ4Z5xeM","url":"https://dl.airtable.com/WwYtwDVURFCGHCoipxhM_Resume%20(O.%20Huxley).docx","filename":"Resume
+        (O. Huxley).docx","size":16443,"type":"application/vnd.openxmlformats-officedocument.wordprocessingml.document","thumbnails":{"small":{"url":"https://dl.airtable.com/attZJp9i2TJ4Z5xeM-28x36.png","width":28,"height":36},"large":{"url":"https://dl.airtable.com/attZJp9i2TJ4Z5xeM-512x663.png","width":512,"height":663}}}],"Onsite
+        Interview Score":"3 - good candidate","Applying for":["recgrjFdvUdTGnDsF"],"Phone
+        Screen Interviewer":["recnxTtR21srnQBoG"],"Phone Screen Notes":"Good analytical
+        skills, very articulate. Proceed to in-person interview."},"createdTime":"2015-11-11T23:19:11.000Z"}]}'
+    http_version: 
+  recorded_at: Thu, 14 Dec 2017 17:03:42 GMT
+recorded_with: VCR 4.0.0

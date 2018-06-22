@@ -1,7 +1,17 @@
-require "bundler/gem_tasks"
-require 'rake/testtask'
+require 'bundler'
+Bundler.setup
+Bundler::GemHelper.install_tasks
 
-Rake::TestTask.new do |t|
-  t.libs << 'test'
-  t.pattern = "test/*_test.rb"
+require 'rspec/core/rake_task'
+
+desc 'Run all tests'
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.ruby_opts = %w[-w]
 end
+
+desc 'Run RuboCop on the lib directory'
+task :rubocop do
+  sh 'bundle exec rubocop lib'
+end
+
+task default: %i[spec rubocop]
