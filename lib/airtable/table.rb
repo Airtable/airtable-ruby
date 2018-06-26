@@ -20,10 +20,25 @@ module Airtable
 
     # Fetch records from the sheet given the list options
     # Options: limit = 100, offset = "as345g", sort = ["Name", "asc"]
+    # sort could be an array
     # records(:sort => ["Name", :desc], :limit => 50, :offset => "as345g")
     def records(options={})
-      options["sortField"], options["sortDirection"] = options.delete(:sort) if options[:sort]
-      results = self.class.get(worksheet_url, query: options).parsed_response
+      update_sort_options!(options)
+      raw_response = self.class.get(worksheet_url, query: options)
+      case raw_response.code
+          when 200
+            # ok
+          when 422
+            results = raw_response.parsed_response
+            check_and_raise_error(results)
+            raise Error.new('Invalid request')
+          when 503
+            raise Error.new('Service not available')
+          when 500...600
+            puts "Server error #{response.code}"
+            raise Error.new('Server error please contact support@airtable.com')
+      end
+      results = raw_response.parsed_response
       check_and_raise_error(results)
       RecordSet.new(results)
     end
@@ -34,7 +49,7 @@ module Airtable
     #
     # select(limit: 10, sort: ["Name", "asc"], formula: "Order < 2")
     def select(options={})
-      options['sortField'], options['sortDirection'] = options.delete(:sort) if options[:sort]
+      update_sort_options!(options)
       options['maxRecords'] = options.delete(:limit) if options[:limit]
 
       if options[:formula]
@@ -45,6 +60,32 @@ module Airtable
       results = self.class.get(worksheet_url, query: options).parsed_response
       check_and_raise_error(results)
       RecordSet.new(results)
+    end
+
+    def update_sort_options!(options)
+      sortOption = options.delete(:sort) || options.delete('sort')
+      if sortOption && sortOption.is_a?(Array)
+        if sortOption.length > 0
+          if sortOption[0].is_a? String
+            singleSortField, singleSortDirection = sortOption
+            options["sort"] = [{field: singleSortField, direction: singleSortDirection}]
+          elsif sortOption[0].is_a?(Hash)
+            options["sort"] = sortOption.to_a
+          elsif sortOption.is_a?(Array) && sortOption[0].is_a?(Array)
+            options["sort"] = sortOption.map {|(sortField, sortDirection)| {field: sortField, direction: sortDirection} }
+          else
+            raise ArgumentError.new("Unknown sort options format.")
+          end
+        end
+      elsif sortOption
+        options["sort"] = sortOption
+      end
+
+      if options["sort"]
+        # standardize the sort spec
+        options["sort"] = options["sort"].map {|sortSpec| {field: sortSpec[:field].to_s, direction: sortSpec[:direction].to_s.downcase} }
+        raise ArgumentError.new("Unknown sort direction")  unless options["sort"].all? {|sortObj| ['asc', 'desc'].include? sortObj[:direction]}
+      end
     end
 
     def raise_bad_formula_error
