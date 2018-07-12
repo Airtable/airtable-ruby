@@ -124,10 +124,10 @@ Records can be updated using the `update` method on a table:
 
 ### Deleting Records
 
-Records can be destroyed using the `destroy` method on a table:
+Records can be destroyed using the `destroy` method on a table (by passing the id as argument):
 
 ```ruby
-@table.destroy(record)
+@table.destroy("rec02sKGVIzU65eV2")
 ```
 
 ## Contributing
