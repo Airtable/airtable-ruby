@@ -59,9 +59,9 @@ module Airtable
     end
 
     # Creates a record by posting to airtable
-    def create(record)
+    def create(record, typecast = false)
       result = self.class.post(worksheet_url,
-        :body => { "fields" => record.fields }.to_json,
+        :body => { "fields" => record.fields, "typecast" => typecast }.to_json,
         :headers => { "Content-type" => "application/json" }).parsed_response
 
       check_and_raise_error(result)
@@ -71,9 +71,9 @@ module Airtable
     end
 
     # Replaces record in airtable based on id
-    def update(record)
+    def update(record, typecast = false)
       result = self.class.put(worksheet_url + "/" + record.id,
-        :body => { "fields" => record.fields_for_update }.to_json,
+        :body => { "fields" => record.fields_for_update, "typecast" => typecast }.to_json,
         :headers => { "Content-type" => "application/json" }).parsed_response
 
       check_and_raise_error(result)
