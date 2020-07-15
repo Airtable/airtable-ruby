@@ -15,7 +15,6 @@ module Airtable
 
     # Set the given attribute to value
     def []=(name, value)
-      @column_keys << name
       @attrs[to_key(name)] = value
       define_accessor(name) unless respond_to?(name)
     end
@@ -29,14 +28,13 @@ module Airtable
 
     # Removes old and add new attributes for the record
     def override_attributes!(attrs={})
-      @column_keys = attrs.keys
       @attrs = HashWithIndifferentAccess.new(Hash[attrs.map { |k, v| [ to_key(k), v ] }])
       @attrs.map { |k, v| define_accessor(k) }
     end
 
     # Hash with keys based on airtable original column names
     def fields
-      HashWithIndifferentAccess.new(Hash[@column_keys.map { |k| [ k, @attrs[to_key(k)] ] }])
+      HashWithIndifferentAccess.new(Hash[@attrs.keys.map { |k| [ k, @attrs[to_key(k)] ] }])
     end
 
     # Airtable will complain if we pass an 'id' as part of the request body.
