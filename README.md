@@ -4,11 +4,21 @@ Easily connect to [airtable](https://airtable.com) data using ruby with access t
 
 # Note on library status
 
-We are currently transitioning this gem to be supported by
-Airtable. We will maintain it moving forward, but until we fully
-support it, it will stay in the status of "community libraries". At
-that time we will remove this notice and add a "ruby" section to the
-API docs.
+Airtable plans to officially support this gem, but it will stay in
+the stattus of "community libraries" until we get there.
+
+The current status of the gem is not production-ready.
+
+You're welcome to contribute to the gem (look at
+[#26](https://github.com/Airtable/airtable-ruby/issues/26) if you
+want to become a maintainer), but expect issues.
+
+You can also try the community-developed
+[airrecord](https://github.com/sirupsen/airrecord) gem, which is
+better maintained for now.
+
+Whenever this gem becomes fully supported by Airtable, we will
+remove this notice and add a "ruby" section to the API docs.
 
 ## Installation
 
