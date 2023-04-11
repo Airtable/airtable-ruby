@@ -101,7 +101,7 @@ module Airtable
     protected
 
     def check_and_raise_error(response)
-      response['error'] ? raise(Error.new(response['error'])) : false
+      response['errors'] ? raise(Error.new(response['errors'].first)) : false
     end
 
     def result_attributes(res)
