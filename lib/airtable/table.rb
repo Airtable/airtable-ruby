@@ -1,16 +1,13 @@
 module Airtable
 
   class Table < Resource
-    # Maximum results per request
-    LIMIT_MAX = 100
-
     # Fetch all records iterating through offsets until retrieving the entire collection
     # all(:sort => ["Name", :desc])
     def all(options={})
       offset = nil
       results = []
       begin
-        options.merge!(:limit => LIMIT_MAX, :offset => offset)
+        options.merge!(:offset => offset)
         response = records(options)
         results += response.records
         offset = response.offset
