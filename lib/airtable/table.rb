@@ -1,16 +1,13 @@
 module Airtable
 
   class Table < Resource
-    # Maximum results per request
-    LIMIT_MAX = 100
-
     # Fetch all records iterating through offsets until retrieving the entire collection
     # all(:sort => ["Name", :desc])
     def all(options={})
       offset = nil
       results = []
       begin
-        options.merge!(:limit => LIMIT_MAX, :offset => offset)
+        options.merge!(:offset => offset)
         response = records(options)
         results += response.records
         offset = response.offset
@@ -22,10 +19,8 @@ module Airtable
     # Options: limit = 100, offset = "as345g", sort = ["Name", "asc"]
     # records(:sort => ["Name", :desc], :limit => 50, :offset => "as345g")
     def records(options={})
-      options["sortField"], options["sortDirection"] = options.delete(:sort) if options[:sort]
-      results = self.class.get(worksheet_url, query: options).parsed_response
-      check_and_raise_error(results)
-      RecordSet.new(results)
+      # previous was just a limited version of select()
+      select(options)
     end
 
     # Query for records using a string formula
